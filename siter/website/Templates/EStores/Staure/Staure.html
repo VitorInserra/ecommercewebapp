@@ -1,0 +1,36 @@
+{% extends "base.html" %} {% block title %} Stuare {% endblock %} {% block content%}
+<body>
+    {% if current_user.role=='admin' %}
+    <div class="container" style="height:1rem">
+        <a href="newitem/{{store.id}}" class="btn btn-primary">+</a>
+    </div>
+    {% endif %}
+
+    <div class="row mw-100">
+        {% for column in items %}
+        {% if column %}
+        <a href="/{{store.id}}/{{column.id}}">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5 col-xs-5">
+                <div class="card" style="width: 18rem; height: 20rem;">
+                    <img style="height:16rem" src="static/images/{{column.imagename}}" alt="{{column.name}}">
+                    <div class="card-footer" style="height:4rem">
+                        <div class="row mw-100">
+                            <div class="col-7">
+                                <h6 class="card-title">{{column.name}}</h6>
+                            </div>
+                            <div class="col-5">
+                                <p class="card-text"><small>{{column.category}}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% if current_user.role=='admin' %}
+        <a href="../removeitem/{{column.store_id}}/{{column.id}}">Remove</a>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

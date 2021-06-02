@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %} BFStore {% endblock %} {% block content%}
+<body>
+	<form method="POST">
+		<div class="container">
+			<input type="submit" name="addtocart" value="addtocart">
+			<p>{{item.name}}</p>
+		</div>
+	</form>
+</body>
+{% endblock %}

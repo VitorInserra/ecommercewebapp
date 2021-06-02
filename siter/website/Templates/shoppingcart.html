@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %} Shopping Cart {% endblock %} {% block content%}
+<body>
+	<div class="container">
+		{% for row in cart %}
+		<div class="row">
+			<a href="/{{row.store_id}}/{{row.id}}">{{row.name}}</a>
+			<a href="shoppingcart/remove/{{row.id}}">Remove {{row.name}}</a>
+		</div>
+		{% endfor %}
+	</div>
+	{% if info %}
+	<a href="/checkout">Comprar</a>
+	{% else %}
+	<a href="/profile">Add billing info to profile</a>
+	{% endif %}
+</body>
+{% endblock %}
