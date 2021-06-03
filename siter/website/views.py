@@ -10,7 +10,6 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-
     storesls = []
     
     for storeid in range (0, 100): #change parameters as database grows

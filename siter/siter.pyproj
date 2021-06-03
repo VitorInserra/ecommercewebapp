@@ -46,6 +46,7 @@
   <ItemGroup>
     <Folder Include="website\" />
     <Folder Include="website\static\images\" />
+    <Folder Include="website\static\styles\" />
     <Folder Include="website\templates\" />
     <Folder Include="website\static\" />
     <Folder Include="website\templates\estores\" />
@@ -53,7 +54,7 @@
     <Folder Include="website\templates\estores\Staure\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="website\static\main.css" />
+    <Content Include="website\static\styles\main.css" />
     <Content Include="website\templates\adminlogin.html" />
     <Content Include="website\templates\adminsignup.html" />
     <Content Include="website\templates\base.html" />
