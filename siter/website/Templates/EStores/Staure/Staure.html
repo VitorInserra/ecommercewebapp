@@ -2,7 +2,7 @@
 <body>
     {% if current_user.role=='admin' %}
     <div class="container" style="height:1rem">
-        <a href="newitem/{{store.id}}" class="btn btn-primary">+</a>
+        <a href="/newitem/{{store.id}}" class="btn btn-primary">+</a>
     </div>
     {% endif %}
 

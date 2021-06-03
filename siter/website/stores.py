@@ -147,8 +147,11 @@ def BFStoreitem(storeid, id):
 def removeitem(storeid, itemid):
     item = Item.query.filter_by(id=itemid).first()
     cartitem = CartItem.query.filter_by(item_id=itemid).first()
-    db.session.delete(item)
-    db.session.delete(cartitem)
+    if item:
+        db.session.delete(item)
+    if cartitem:
+        db.session.delete(cartitem)
+    
     db.session.commit()
 
     return redirect("/store/" + storeid)

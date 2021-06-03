@@ -18,7 +18,7 @@ def home():
         if currentstore:
                 storesls.append(currentstore)
 
-    return render_template("home.html", storesls=storesls)
+    return render_template("home.html", storesls=storesls, length=len(storesls), i=0)
 
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required

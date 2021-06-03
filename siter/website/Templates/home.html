@@ -5,31 +5,77 @@
 		<a href="newstore" class="btn btn-primary">+</a>
 	</div>
 	{% endif %}
-	<div class="row mw-100">
-		{% for column in storesls %}
-		{% if column %}
-		<a href="/store/{{column.id}}">
-		<div class="col-xl-3 col-lg-3 col-md-4 col-sm-5 col-xs-5">
-			<div class="card" style="width: 15rem; height: 14rem;">
-				<img style="height: 10rem" src="static/images/{{column.logoname}}" alt="{{column.name}}">
-				<div style="height: 4rem" class="card-footer">
-					<div class="row mw-100">
-						<div class="col-7">
-							<h6 class="card-title">{{column.name}}</h6>
+
+	<div id="carousel-multi-item" class="carousel-multi-item" data-ride="carousel">
+
+		<!--Controls-->
+		<div class="controls-bottom">
+			<a class="btn-floating" href="carousel-multi-item" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+			<a class="btn-floating" href="carousel-multi-item" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+		</div>
+
+		<div class="carousel-inner" role="listbox">
+			{% for i in range(length//3) %}
+			<div class="carousel-item active">
+				<div class="row">
+					<a href="/store/{{storesls[i].id}}">
+						<div clasqs="col-xl-3 col-lg-3 col-md-4 col-sm-5 col-xs-5">
+							<div class="card" style="width: 15rem; height: 14rem;">
+								<img style="height: 10rem" src="static/images/{{storesls[i].logoname}}" alt="{{storesls[i].name}}">
+								<div style="height: 4rem" class="card-footer">
+									<div class="row mw-100">
+										<div class="col-7">
+											<h6 class="card-title">{{storesls[i].name}}</h6>
+										</div>
+										<div class="col-5">
+											<p class="card-text"><small>{{storesls[i].type1}} {{storesls[i].type2}}</small></p>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="col-5">
-							<p class="card-text"><small>{{column.type1}} {{column.type2}}</small></p>
+					</a>
+
+					<a href="/store/{{storesls[i+1].id}}">
+						<div clasqs="col-xl-3 col-lg-3 col-md-4 col-sm-5 col-xs-5">
+							<div class="card" style="width: 15rem; height: 14rem;">
+								<img style="height: 10rem" src="static/images/{{storesls[i+1].logoname}}" alt="{{storesls[i+1].name}}">
+								<div style="height: 4rem" class="card-footer">
+									<div class="row mw-100">
+										<div class="col-7">
+											<h6 class="card-title">{{storesls[i+1].name}}</h6>
+										</div>
+										<div class="col-5">
+											<p class="card-text"><small>{{storesls[i+1].type1}} {{storesls[i+1].type2}}</small></p>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
+					</a>
+
+					<a href="/store/{{storesls[i+2].id}}">
+						<div clasqs="col-xl-3 col-lg-3 col-md-4 col-sm-5 col-xs-5">
+							<div class="card" style="width: 15rem; height: 14rem;">
+								<img style="height: 10rem" src="static/images/{{storesls[i+2].logoname}}" alt="{{storesls[i+1].id.name}}">
+								<div style="height: 4rem" class="card-footer">
+									<div class="row mw-100">
+										<div class="col-7">
+											<h6 class="card-title">{{storesls[i+2].name}}</h6>
+										</div>
+										<div class="col-5">
+											<p class="card-text"><small>{{storesls[i+2].type1}} {{storesls[i+2].type2}}</small></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</a>
 				</div>
 			</div>
+			{% endfor %}
 		</div>
-		</a>
-		{% if current_user.role=='admin' %}
-		<a href="removestore/{{column.id}}">Delete</a>
-		{% endif %}
-		{% endif %}
-		{% endfor %}
 	</div>
+
 </body>
 {% endblock%}
