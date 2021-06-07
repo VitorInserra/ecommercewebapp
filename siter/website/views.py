@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
-from .models import Item, Store, User, UserInfo
+from .models import Item, Store, User, UserInfo, CartItem
 from . import db
 import os
 
@@ -17,7 +17,7 @@ def home():
         if currentstore:
                 storesls.append(currentstore)
 
-    return render_template("home.html", storesls=storesls, length=len(storesls), i=0)
+    return render_template("general/home.html", storesls=storesls, length=len(storesls), i=0)
 
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -37,31 +37,69 @@ def profile():
                 db.session.commit()
                 return redirect(url_for('views.profile'))
 
-    return render_template("profile.html", info=info)
+    return render_template("profile/profile.html", info=info)
+
+@views.route('/deleteaccount', methods=['GET', 'POST'])
+@login_required
+def deleteaccount():
+    if request.method=='POST':
+        user = User.query.filter_by(id=current_user.id).first()
+
+        store = Store.query.filter_by(user_id=current_user.id).first()
+        if store:
+            items = Item.query.filter_by(store_id=store.id).all()
+
+        userinfo = UserInfo.query.filter_by(user_id=current_user.id).all()
+        cartitems = CartItem.query.filter_by(user_id=current_user.id).all()
+
+        if userinfo:
+            db.session.delete(userinfo)
+        if store:
+            if items:
+                db.session.delete(items)
+            db.session.delete(store)
+        if cartitems:
+            db.session.delete(cartitems)
+        
+        db.session.delete(user)
+
+        db.session.commit()
+
+    return render_template('profile/deleteaccount.html')
+
+@views.route('/store', methods=['GET', 'POST'])
+@login_required
+def store():
+    return render_template("profile/store.html")
 
 @views.route('/newstore', methods=['GET', 'POST'])
 @login_required
 def newstore():
-    if request.method=='POST':
-        name = request.form.get('storename')
-        type1 = request.form.get('type1')
-        type2 = request.form.get('type2')
-        type3 = request.form.get('type3')
+    if not current_user.store or current_user.role=='admin':
+        if request.method=='POST':
+            name = request.form.get('storename')
+            type1 = request.form.get('type1')
+            type2 = request.form.get('type2')
+            type3 = request.form.get('type3')
         
-        #get image
-        image = request.files['logo']
+            #get image
+            image = request.files['logo']
 
-        save_path = 'website\static\images'
+            save_path = 'website\static\images'
 
-        image.save(os.path.join(save_path, image.filename))
+            image.save(os.path.join(save_path, image.filename))
 
-        newstore = Store(name=name, logoname=image.filename, type1=type1, type2=type2, type3=type3)
-        db.session.add(newstore)
-        db.session.commit()
+            newstore = Store(name=name, logoname=image.filename, user_id=current_user.id, type1=type1, type2=type2, type3=type3)
+            db.session.add(newstore)
+            db.session.commit()
 
+            return redirect(url_for('views.home'))
+    
+    elif current_user.store and current_user.role!='admin':
         return redirect(url_for('views.home'))
 
-    return render_template("newstore.html")
+
+    return render_template("profile/newstore.html")
 
 @views.route('/removestore/<storeid>')
 @login_required

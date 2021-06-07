@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
 
     cart = db.relationship('CartItem', backref="user")
     userinfo = db.relationship('UserInfo', backref="user")
+    store = db.relationship('Store', backref="user")
 
 
 class UserInfo(db.Model):
@@ -31,6 +32,7 @@ class CartItem(db.Model):
 
 class Store(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
     name = db.Column(db.String(150))
     logoname = db.Column(db.String(200))
 

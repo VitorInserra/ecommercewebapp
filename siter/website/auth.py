@@ -43,7 +43,7 @@ def signup():
             return redirect(url_for('views.home'))
 
 
-    return render_template("signup.html", user=current_user)
+    return render_template("auth/signup.html", user=current_user)
 #normal log in#
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -62,7 +62,7 @@ def login():
         else:
             flash('Email does not exist.', category='error')
 
-    return render_template("login.html")
+    return render_template("auth/login.html")
 
 
 #admin sign up#
@@ -103,7 +103,7 @@ def adminsignup():
             flash('Account created!', category='success')
 
             return redirect(url_for('views.home'))
-    return render_template("adminsignup.html")
+    return render_template("auth/adminsignup.html")
 #admin log in#
 @auth.route('/adminlogin', methods=['GET', 'POST'])
 def adminlogin():
@@ -124,7 +124,7 @@ def adminlogin():
         else:
             flash('Email does not exist.', category='error')
 
-    return render_template("adminlogin.html", user=current_user)
+    return render_template("auth/adminlogin.html", user=current_user)
 ###
 
 
@@ -137,5 +137,5 @@ def logout():
         logout_user()
         return redirect(url_for('views.home'))
 
-    return render_template("logout.html")
+    return render_template("auth/logout.html")
 ###

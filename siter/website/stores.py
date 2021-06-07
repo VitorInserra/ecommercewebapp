@@ -32,7 +32,7 @@ def newitem(storeid):
 
         return redirect("/store/" + storeid)
 
-    return render_template("newitem.html")
+    return render_template("general/newitem.html")
 ###
 
 #shopping cart#
@@ -53,7 +53,7 @@ def shoppingcart():
 
     info = UserInfo.query.filter_by(user_id=current_user.id).first()
 
-    return render_template("shoppingcart.html", cart=cart, info=info)
+    return render_template("general/shoppingcart.html", cart=cart, info=info)
 #remove
 @stores.route('/shoppingcart/remove/<itemid>', methods=['GET','POST'])
 @login_required
@@ -95,7 +95,7 @@ def checkout():
                         db.session.delete(delcart)
                         db.session.commit()
 
-                    flash('Itens estao a caminho', category='success')
+                    flash('Items on their way!', category='success')
                     return redirect(url_for('views.home'))
                 
                     
@@ -105,54 +105,5 @@ def checkout():
             else:
                 flash('No billing information, please add to profile', category='error')
 
-    return render_template("checkout.html")
-###
-
-
-#Universal store route#
-@stores.route('/store/<storeid>', methods=['GET', 'POST'])
-@login_required
-def callstore(storeid):
-    store = Store.query.filter_by(id=storeid).first()
-
-    items = []
-
-    #change parameters as database grows#
-    for itemid in range (0, 100):
-        item = Item.query.filter_by(id=itemid).first()
-        if item:
-            if item.store_id == store.id:
-                items.append(item)
-                
-    return render_template("estores/" + store.name + "/" + store.name + ".html", items=items, store=store)
-#item page
-@stores.route('/<storeid>/<id>', methods=['GET','POST'])
-@login_required
-def BFStoreitem(storeid, id): 
-    item = Item.query.filter_by(id=id).first()
-    store = Store.query.filter_by(id=storeid).first()
-
-    #add to cart
-    if request.method=='POST':    
-        if request.form.get('addtocart') == 'addtocart':
-            cartitem = CartItem(item_id=id, user_id=current_user.id)
-            flash('Item successfully added', category='success')
-            db.session.add(cartitem)
-            db.session.commit()
-    #   
-    return render_template("estores/" + store.name + "/" + store.name + "item.html", item=item, store=store)
-#removing items#
-@stores.route('/removeitem/<storeid>/<itemid>')
-@login_required
-def removeitem(storeid, itemid):
-    item = Item.query.filter_by(id=itemid).first()
-    cartitem = CartItem.query.filter_by(item_id=itemid).first()
-    if item:
-        db.session.delete(item)
-    if cartitem:
-        db.session.delete(cartitem)
-    
-    db.session.commit()
-
-    return redirect("/store/" + storeid)
+    return render_template("general/checkout.html")
 ###

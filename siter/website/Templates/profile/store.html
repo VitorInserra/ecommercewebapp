@@ -1,0 +1,6 @@
+{% extends "base.html" %} {% block title %} Home {% endblock %} {% block content%}
+{% if not current_user.store or current_user.role=='admin' %}
+<a href="/newstore">Create a store</a>
+{% endif %}
+
+{% endblock %}

@@ -45,32 +45,30 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />
+    <Folder Include="website\templates\auth\" />
+    <Folder Include="website\templates\general\" />
+    <Folder Include="website\templates\profile\" />
     <Folder Include="website\static\images\" />
     <Folder Include="website\static\styles\" />
     <Folder Include="website\templates\" />
     <Folder Include="website\static\" />
-    <Folder Include="website\templates\estores\" />
-    <Folder Include="website\templates\estores\BFStore\" />
-    <Folder Include="website\templates\estores\Staure\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="website\static\styles\main.css" />
-    <Content Include="website\templates\adminlogin.html" />
-    <Content Include="website\templates\adminsignup.html" />
+    <Content Include="website\templates\auth\adminlogin.html" />
+    <Content Include="website\templates\auth\adminsignup.html" />
     <Content Include="website\templates\base.html" />
-    <Content Include="website\templates\checkout.html" />
-    <Content Include="website\templates\estores\BFStore\BFStoreitem.html" />
-    <Content Include="website\templates\estores\Staure\Staure.html" />
-    <Content Include="website\templates\estores\Staure\Staureitem.html" />
-    <Content Include="website\templates\profile.html" />
-    <Content Include="website\templates\shoppingcart.html" />
-    <Content Include="website\templates\home.html" />
-    <Content Include="website\templates\login.html" />
-    <Content Include="website\templates\signup.html" />
-    <Content Include="website\templates\logout.html" />
-    <Content Include="website\templates\newitem.html" />
-    <Content Include="website\templates\newstore.html" />
-    <Content Include="website\templates\estores\BFStore\BFStore.html" />
+    <Content Include="website\templates\general\checkout.html" />
+    <Content Include="website\templates\profile\profile.html" />
+    <Content Include="website\templates\profile\deleteaccount.html" />
+    <Content Include="website\templates\general\shoppingcart.html" />
+    <Content Include="website\templates\general\home.html" />
+    <Content Include="website\templates\auth\login.html" />
+    <Content Include="website\templates\auth\signup.html" />
+    <Content Include="website\templates\auth\logout.html" />
+    <Content Include="website\templates\general\newitem.html" />
+    <Content Include="website\templates\profile\newstore.html" />
+    <Content Include="website\templates\profile\store.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
