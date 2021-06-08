@@ -34,16 +34,22 @@ def signup():
         elif len(password1) < 7:
             flash('Password must have more than 7 characters', category='error')
         else:
-            new_user = User(email=email, username=username, password=generate_password_hash(password1, method='sha256'), role='user') #look at other hashing algorithms
-            db.session.add(new_user)
-            db.session.commit()
-            login_user(new_user, remember=True)
-            flash('Account created!', category='success')
+            try:
+                new_user = User(email=email, username=username, password=generate_password_hash(password1, method='sha256'), role='user') #look at other hashing algorithms
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user, remember=True)
+                flash('Account created!', category='success')
 
-            return redirect(url_for('views.home'))
-
-
-    return render_template("auth/signup.html", user=current_user)
+                return redirect(url_for('views.home'))
+            except:
+                flash('Something went wrong.', category='error')
+                return redirect(url_for('views.home'))
+    try:
+        return render_template("auth/signup.html", user=current_user)
+    except:
+        flash('Something went wrong.', category='error')
+        return redirect(url_for('views.home'))
 #normal log in#
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,16 +60,22 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password): #checks user.password and password to see if they are the same
-                flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                try: 
+                    login_user(user, remember=True)
+                    flash('Logged in successfully!', category='success')
+                    return redirect(url_for('views.home'))
+                except:
+                    flash('Something went wrong.', category='error')
+                    return redirect(url_for('auth.login'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
             flash('Email does not exist.', category='error')
-
-    return render_template("auth/login.html")
-
+    try:
+        return render_template("auth/login.html")
+    except:
+        flash('Something went wrong.', category='error')
+        return redirect(url_for('views.home'))
 
 #admin sign up#
 @auth.route('/adminsignup', methods=['GET', 'POST'])
@@ -132,7 +144,6 @@ def adminlogin():
 @auth.route('/logout', methods=['GET','POST'])
 @login_required
 def logout():
-
     if request.method == 'POST':
         logout_user()
         return redirect(url_for('views.home'))

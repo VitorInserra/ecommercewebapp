@@ -23,46 +23,51 @@ def newitem(storeid):
         #imagename = image.filename
         save_path = 'website\static\images'
 
-        #completeName = os.path.join(save_path, imagename)
-        image.save(os.path.join(save_path, image.filename))
+        try:
+            #completeName = os.path.join(save_path, imagename)
+            image.save(os.path.join(save_path, image.filename))
 
-        newitem = Item(name=name, price=price, imagename=image.filename, category=category, notes=notes, store_id=storeid)
-        db.session.add(newitem)
-        db.session.commit()
+            newitem = Item(name=name, price=price, imagename=image.filename, category=category, notes=notes, store_id=storeid)
+            db.session.add(newitem)
+            db.session.commit()
 
-        return redirect("/store/" + storeid)
+            return redirect("/store/" + storeid)
+        except:
+            flash('Something went wrong.', category='error')
+            return redirect(url_for('views.home'))
 
-    return render_template("general/newitem.html")
+    try:
+        return render_template("general/newitem.html")
+    except:
+        flash('Something went wrong.', category='error')
+        return redirect(url_for('views.home'))
 ###
 
 #shopping cart#
 @stores.route('/shoppingcart', methods=['GET', 'POST'])
 @login_required
 def shoppingcart():
-    cart = []
-    itemid = 0
-    itemid = int(itemid)
-
-    for cartitemid in range(0, 100):
-        cartitem = CartItem.query.filter_by(id=cartitemid).first()
-        if cartitem:
-            if cartitem.user_id == current_user.id:
-                itemid = cartitem.item_id
-                currentitem = Item.query.filter_by(id=itemid).first()
-                cart.append(currentitem)
-
+    cartitems = CartItem.query.filter_by(user_id=current_user.id).all()
     info = UserInfo.query.filter_by(user_id=current_user.id).first()
 
-    return render_template("general/shoppingcart.html", cart=cart, info=info)
+    try:
+        return render_template("general/shoppingcart.html", cart=cartitems, info=info)
+    except:
+        flash('Something went wrong.', category='error')
+        return redirect(url_for('views.home'))
 #remove
 @stores.route('/shoppingcart/remove/<itemid>', methods=['GET','POST'])
 @login_required
 def removefromcart(itemid):
-    delcart = CartItem.query.filter_by(item_id=itemid).first()
-    db.session.delete(delcart)
-    db.session.commit()
+    try:
+        delcart = CartItem.query.filter_by(item_id=itemid).first()
+        db.session.delete(delcart)
+        db.session.commit()
 
-    return redirect(url_for('stores.shoppingcart'))
+        return redirect(url_for('stores.shoppingcart'))
+    except:
+        flash('Something went wrong.', category='error')
+        return redirect(url_for('stores.shoppingcart'))
 ###
 
 #buy#

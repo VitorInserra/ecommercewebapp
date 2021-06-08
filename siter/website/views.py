@@ -10,14 +10,12 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    storesls = []
     
-    for storeid in range (0, 100): #change parameters as database grows
-        currentstore = Store.query.filter_by(id=storeid).first()
-        if currentstore:
-                storesls.append(currentstore)
 
-    return render_template("general/home.html", storesls=storesls, length=len(storesls), i=0)
+    try:
+        return render_template("general/home.html")
+    except:
+        flash('Try refreshing your page!', category='error')
 
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -32,12 +30,19 @@ def profile():
                 flash('Cartao invalido', category='error')
             
             else:
-                info = UserInfo(user_id=current_user.id, creditcard=creditcard, adress=adress)
-                db.session.add(info)
-                db.session.commit()
-                return redirect(url_for('views.profile'))
-
-    return render_template("profile/profile.html", info=info)
+                try:
+                    info = UserInfo(user_id=current_user.id, creditcard=creditcard, adress=adress)
+                    db.session.add(info)
+                    db.session.commit()
+                    return redirect(url_for('views.profile'))
+                except:
+                    flash('Something went wrong.', category='error')
+                    return redirect(url_for('views.profile'))
+    try:
+        return render_template("profile/profile.html", info=info)
+    except:
+        flash('Oops! Something went wrong.', category='error')
+        return redirect(url_for('views.home'))
 
 @views.route('/deleteaccount', methods=['GET', 'POST'])
 @login_required
@@ -51,21 +56,28 @@ def deleteaccount():
 
         userinfo = UserInfo.query.filter_by(user_id=current_user.id).all()
         cartitems = CartItem.query.filter_by(user_id=current_user.id).all()
-
-        if userinfo:
-            db.session.delete(userinfo)
-        if store:
-            if items:
-                db.session.delete(items)
-            db.session.delete(store)
-        if cartitems:
-            db.session.delete(cartitems)
+        try:
+            if userinfo:
+                db.session.delete(userinfo)
+            if store:
+                if items:
+                    db.session.delete(items)
+                db.session.delete(store)
+            if cartitems:
+                db.session.delete(cartitems)
         
-        db.session.delete(user)
+            db.session.delete(user)
 
-        db.session.commit()
+            db.session.commit()
+        except:
+            flash('Something went wrong.', category='error')
+            return redirect(url_for('views.profile'))
 
-    return render_template('profile/deleteaccount.html')
+    try:
+        return render_template('profile/deleteaccount.html')
+    except:
+        flash('Something went wrong.', category='error')
+        return redirect(url_for('views.home'))
 
 @views.route('/store', methods=['GET', 'POST'])
 @login_required
@@ -87,25 +99,36 @@ def newstore():
 
             save_path = 'website\static\images'
 
-            image.save(os.path.join(save_path, image.filename))
 
-            newstore = Store(name=name, logoname=image.filename, user_id=current_user.id, type1=type1, type2=type2, type3=type3)
-            db.session.add(newstore)
-            db.session.commit()
+            try:
+                image.save(os.path.join(save_path, image.filename))
 
-            return redirect(url_for('views.home'))
+                newstore = Store(name=name, logoname=image.filename, user_id=current_user.id, type1=type1, type2=type2, type3=type3)
+                db.session.add(newstore)
+                db.session.commit()
+
+                return redirect(url_for('views.home'))
+            except:
+                flash('Something went wrong.', category='error')
+                return redirect(url_for('views.store'))
     
     elif current_user.store and current_user.role!='admin':
         return redirect(url_for('views.home'))
 
-
-    return render_template("profile/newstore.html")
+    try:
+        return render_template("profile/newstore.html")
+    except:
+        flash('Something went wrong.', category='error')
+        return redirect(url_for('views.store'))
 
 @views.route('/removestore/<storeid>')
 @login_required
 def removestore(storeid):
-    store = Store.query.filter_by(id=storeid).first()
-    db.session.delete(store)
-    db.session.commit()
-
-    return redirect(url_for('views.home'))
+    try:        
+        store = Store.query.filter_by(id=storeid).first()
+        db.session.delete(store)
+        db.session.commit()
+        return redirect(url_for('views.home'))
+    except:
+        flash('Something went wrong.', catgory='error')
+        return redirect(url_for('views.store'))
