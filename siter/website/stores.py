@@ -11,7 +11,6 @@ stores = Blueprint('stores', __name__)
 @stores.route('/newitem/<storeid>', methods=['GET', 'POST'])
 @login_required
 def newitem(storeid):
-    y = storeid
     if request.method=='POST':
         name = request.form.get('itemname')
         price = request.form.get('itemprice')
@@ -37,7 +36,7 @@ def newitem(storeid):
             return redirect(url_for('views.home'))
 
     try:
-        return render_template("general/newitem.html")
+        return render_template("stores/newitem.html")
     except:
         flash('Something went wrong.', category='error')
         return redirect(url_for('views.home'))
@@ -51,7 +50,7 @@ def shoppingcart():
     info = UserInfo.query.filter_by(user_id=current_user.id).first()
 
     try:
-        return render_template("general/shoppingcart.html", cart=cartitems, info=info)
+        return render_template("stores/shoppingcart.html", cart=cartitems, info=info)
     except:
         flash('Something went wrong.', category='error')
         return redirect(url_for('views.home'))
@@ -110,5 +109,10 @@ def checkout():
             else:
                 flash('No billing information, please add to profile', category='error')
 
-    return render_template("general/checkout.html")
+    return render_template("stores/checkout.html")
 ###
+
+@stores.route('/store/<storeid>', methods=['GET','POST'])
+@login_required
+def store(storeid):
+    return render_template('stores/store.html')

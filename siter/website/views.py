@@ -79,10 +79,12 @@ def deleteaccount():
         flash('Something went wrong.', category='error')
         return redirect(url_for('views.home'))
 
-@views.route('/store', methods=['GET', 'POST'])
+
+#My store#
+@views.route('/mystore', methods=['GET', 'POST'])
 @login_required
 def store():
-    return render_template("profile/store.html")
+    return render_template("profile/mystore.html")
 
 @views.route('/newstore', methods=['GET', 'POST'])
 @login_required
@@ -120,7 +122,7 @@ def newstore():
     except:
         flash('Something went wrong.', category='error')
         return redirect(url_for('views.store'))
-
+#TO DO:#
 @views.route('/removestore/<storeid>')
 @login_required
 def removestore(storeid):
@@ -132,3 +134,4 @@ def removestore(storeid):
     except:
         flash('Something went wrong.', catgory='error')
         return redirect(url_for('views.store'))
+###
