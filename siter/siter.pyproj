@@ -59,9 +59,11 @@
     <Content Include="website\templates\auth\adminlogin.html" />
     <Content Include="website\templates\auth\adminsignup.html" />
     <Content Include="website\templates\base.html" />
+    <Content Include="website\templates\general\adminmystores.html" />
     <Content Include="website\templates\stores\checkout.html" />
     <Content Include="website\templates\profile\profile.html" />
     <Content Include="website\templates\profile\deleteaccount.html" />
+    <Content Include="website\templates\stores\itempage.html" />
     <Content Include="website\templates\stores\shoppingcart.html" />
     <Content Include="website\templates\general\home.html" />
     <Content Include="website\templates\auth\login.html" />

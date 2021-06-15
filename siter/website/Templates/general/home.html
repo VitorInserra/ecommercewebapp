@@ -1,5 +1,9 @@
-{% extends "base.html" %} {% block title %} Home {% endblock %} {% block content%}
+{% extends "base.html" %} {% block title %} konik.com {% endblock %} {% block content%}
 <body>
-    
+    {% for store in stores %}
+    <div class="container">
+        <a href="/store/{{store.id}}">{{store.name}}</a>
+    </div>
+    {% endfor %}
 </body>
 {% endblock%}

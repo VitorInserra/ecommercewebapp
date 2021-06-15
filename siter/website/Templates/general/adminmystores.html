@@ -1,15 +1,13 @@
 {% extends "base.html" %} {% block title %} My Store {% endblock %} {% block content%}
-{% if not current_user.store %}
 <div class="container">
     <a href="/newstore">Create a store</a>
 </div>
-{% endif %}
-{% if store %}
-<div>
-    <a href="/removestore/{{store.id}}">Remove Store</a>
-</div>
-<div>
+
+{% for store in stores%}
+<div class="container">
+    <a href="/store/{{store.id}}">{{store.name}}</a>
+    <a href="/removestore/{{store.id}}">Remove {{store.name}}</a>
     <a href="/newitem/{{store.id}}">Put an item for sale</a>
 </div>
-{% endif %}
+{% endfor %}
 {% endblock %}

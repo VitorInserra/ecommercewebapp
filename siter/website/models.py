@@ -35,6 +35,7 @@ class Store(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('user.id'))
     name = db.Column(db.String(150))
     logoname = db.Column(db.String(200))
+    item = db.relationship('Item', backref="store")
 
     type1 = db.Column(db.String(150))
     type2 = db.Column(db.String(150))
@@ -49,4 +50,4 @@ class Item(db.Model):
     imagename = db.Column(db.String(200))
     notes = db.Column(db.String(1000))
     
-    store_id = db.Column(db.Integer)
+    store_id = db.Column(db.Integer, ForeignKey('store.id'))

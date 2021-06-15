@@ -11,34 +11,38 @@ stores = Blueprint('stores', __name__)
 @stores.route('/newitem/<storeid>', methods=['GET', 'POST'])
 @login_required
 def newitem(storeid):
-    if request.method=='POST':
-        name = request.form.get('itemname')
-        price = request.form.get('itemprice')
-        category = request.form.get('category')
-        notes = request.form.get('notes')
+    if current_user.store:
+        if request.method=='POST':
+            name = request.form.get('itemname')
+            price = request.form.get('itemprice')
+            category = request.form.get('category')
+            notes = request.form.get('notes')
 
-        image = request.files['itemimage']
+            image = request.files['itemimage']
         
-        #imagename = image.filename
-        save_path = 'website\static\images'
+            #imagename = image.filename
+            save_path = 'website\static\images'
+
+            try:
+                #completeName = os.path.join(save_path, imagename)
+                image.save(os.path.join(save_path, image.filename))
+
+                newitem = Item(name=name, price=price, imagename=image.filename, category=category, notes=notes, store_id=storeid)
+                db.session.add(newitem)
+                db.session.commit()
+
+                return redirect("/store/" + storeid)
+            except:
+                flash('Something went wrong.', category='error')
+                return redirect(url_for('views.home'))
 
         try:
-            #completeName = os.path.join(save_path, imagename)
-            image.save(os.path.join(save_path, image.filename))
-
-            newitem = Item(name=name, price=price, imagename=image.filename, category=category, notes=notes, store_id=storeid)
-            db.session.add(newitem)
-            db.session.commit()
-
-            return redirect("/store/" + storeid)
+            return render_template("stores/newitem.html")
         except:
             flash('Something went wrong.', category='error')
             return redirect(url_for('views.home'))
 
-    try:
-        return render_template("stores/newitem.html")
-    except:
-        flash('Something went wrong.', category='error')
+    else:
         return redirect(url_for('views.home'))
 ###
 
@@ -46,11 +50,24 @@ def newitem(storeid):
 @stores.route('/shoppingcart', methods=['GET', 'POST'])
 @login_required
 def shoppingcart():
+    cart = []
     cartitems = CartItem.query.filter_by(user_id=current_user.id).all()
+    for i in cartitems:
+        cart.append(Item.query.filter_by(id=i.item_id).first())
     info = UserInfo.query.filter_by(user_id=current_user.id).first()
 
+    if request.method=='POST':
+        if request.form.get('buy')=='Buy':
+            for cartitem in cartitems:
+                db.session.delete(cartitem)
+            
+            db.session.commit()
+
+            flash('TO DO', category='Success')
+            return redirect(url_for('views.home'))
+
     try:
-        return render_template("stores/shoppingcart.html", cart=cartitems, info=info)
+        return render_template("stores/shoppingcart.html", cart=cart, info=info)
     except:
         flash('Something went wrong.', category='error')
         return redirect(url_for('views.home'))
@@ -69,50 +86,37 @@ def removefromcart(itemid):
         return redirect(url_for('stores.shoppingcart'))
 ###
 
-#buy#
-@stores.route('/checkout', methods=['GET', 'POST'])
-@login_required
-def checkout():
-    if request.method=='POST':
-        if request.form.get('Buy!')=='buy':
-            cart = []
-            itemid = 0
-
-            itemid = int(itemid)
-            for cartitemid in range(0, 100):
-                cartitem = CartItem.query.filter_by(id=cartitemid).first()
-                if cartitem:
-                    if cartitem.user_id == current_user.id:
-                        itemid = cartitem.item_id
-                        currentitem = Item.query.filter_by(id=itemid).first()
-                        cart.append(currentitem)
-
-            info = UserInfo.query.filter_by(user_id=current_user.id).first()
-            if info:
-                if len(cart) > 0:
-                    print(current_user.email)
-                    print(info.adress, info.creditcard)
-                    print(cart)
-                    
-                    for i in range(len(cart)):
-                        delcart = CartItem.query.filter_by(id=cart[i].id).first()
-                        db.session.delete(delcart)
-                        db.session.commit()
-
-                    flash('Items on their way!', category='success')
-                    return redirect(url_for('views.home'))
-                
-                    
-
-                elif len(cart)==0:
-                    flash('No items in cart', category='error')
-            else:
-                flash('No billing information, please add to profile', category='error')
-
-    return render_template("stores/checkout.html")
-###
-
+#Stores#
 @stores.route('/store/<storeid>', methods=['GET','POST'])
 @login_required
 def store(storeid):
-    return render_template('stores/store.html')
+    store = Store.query.filter_by(id=storeid).first()
+    items = Item.query.filter_by(store_id=storeid).all()
+
+    return render_template('stores/store.html', items=items, store=store)
+#item page
+@stores.route('/item/<itemid>', methods=['GET', 'POST'])
+@login_required
+def item(itemid):
+    item = Item.query.filter_by(id=itemid).first()
+    store = Store.query.filter_by(id=item.store_id).first()
+
+    if request.method=='POST':
+        if request.form.get('Add to cart')=='add':
+            if item:
+                try:
+                    cartitem = CartItem(item_id=item.id, user_id=current_user.id)
+                    db.session.add(cartitem)
+                    db.session.commit()
+
+                    flash('Added to cart', category='success')
+                    return redirect("/item/" + itemid)
+            
+                except:
+                    flash('An error occured', category='error')
+                    return redirect(url_for('views.home'))
+            else:
+                flash('An error occured', category='error')
+                return redirect(url_for('views.home'))
+
+    return render_template('stores/itempage.html', item=item, store=store)

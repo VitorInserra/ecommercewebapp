@@ -3,14 +3,18 @@
 	<div class="container">
 		{% for row in cart %}
 		<div class="row">
-			<a href="/{{row.store_id}}/{{row.id}}">{{row.name}}</a>
+			<a href="/item/{{row.id}}">{{row.name}}</a>
 			<a href="shoppingcart/remove/{{row.id}}">Remove {{row.name}}</a>
 		</div>
 		{% endfor %}
 	</div>
-	{% if info %}
-	<a href="/checkout">Comprar</a>
-	{% else %}
+	{% if info and cart %}
+	<form method="POST">
+		<input type="submit" name="buy" value="Buy">
+	</form>
+	{% elif not cart %}
+	<a href="/">You have no items, let's go shop!</a>
+	{% elif not info %}
 	<a href="/profile">Add billing info to profile</a>
 	{% endif %}
 </body>
