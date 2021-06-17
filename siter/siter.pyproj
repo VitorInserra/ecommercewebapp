@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />
+    <Folder Include="website\static\javascript\" />
     <Folder Include="website\templates\auth\" />
     <Folder Include="website\templates\general\" />
     <Folder Include="website\templates\stores\" />
@@ -55,6 +56,8 @@
     <Folder Include="website\static\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="website\static\javascript\carousel.js" />
+    <Content Include="website\static\styles\homepage.css" />
     <Content Include="website\static\styles\main.css" />
     <Content Include="website\templates\auth\adminlogin.html" />
     <Content Include="website\templates\auth\adminsignup.html" />
