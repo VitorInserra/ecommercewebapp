@@ -1,4 +1,3 @@
-const sliders,;
 var scrollPerClick;
 var ImagePadding = 20;
 let size = window.innerWidth;
@@ -14,7 +13,7 @@ if (size >= 1200) {
 // Scroll Functionality
 var scrollAmount = 0;
 function sliderScrollLeft(selid) {
-    sliders= document.querySelector("selid")
+    const sliders = document.getElementById(selid);
     sliders.scrollTo({
         top: 0,
         left: (scrollAmount -= scrollPerClick),
@@ -28,7 +27,7 @@ function sliderScrollLeft(selid) {
 }
 
 function sliderScrollRight(selid) {
-    sliders = document.querySelector("selid")
+    const sliders = document.getElementById(selid);
     if (scrollAmount <= sliders.scrollWidth - sliders.clientWidth) {
         sliders.scrollTo({
             top: 0,
