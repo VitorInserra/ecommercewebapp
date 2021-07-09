@@ -1,84 +1,86 @@
 {% extends "base.html" %} {% block title %} konik.com {% endblock %} {% block content%}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage.css') }}" />
 <body>
-    <div class="carousel">
-        <div class="carouselbox" id="0">
-            {% for store in stores %}
-            <a href="/store/{{store.id}}">
-                <div>
-                    <div class="card">
-                        <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
-                        <div class="card-footer" style="background-color: black; opacity: 0.7">
-                            <div class="row mw-100">
-                                <div>
-                                    <p class="card-text" style="color: white"><small>{{store.type1}} | {{store.type2}}</small></p>
+    <div class="container">
+        <div class="carousel">
+            <div class="carouselbox" id="0">
+                {% for store in stores %}
+                <a href="/store/{{store.id}}">
+                    <div>
+                        <div class="card">
+                            <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                            <div class="card-footer" style="background-color: black; opacity: 0.7">
+                                <div class="row mw-100">
+                                    <div>
+                                        <p class="card-text" style="color: white"><small>{{store.type1}} | {{store.type2}}</small></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            {% endfor %}
+                {% endfor %}
+            </div>
+
+            <a class="switchLeft sliderButton" onclick="sliderScrollLeft(0)"><</a>
+            <a class="switchRight sliderButton" onclick="sliderScrollRight(0)">></a>
         </div>
 
-        <a class="switchLeft sliderButton" onclick="sliderScrollLeft(0)"><</a>
-        <a class="switchRight sliderButton" onclick="sliderScrollRight(0)">></a>
-    </div>
-
-    <div class="carousel">
-        <div class="carouselbox" id="1">
-            {% for store in stores %}
-            <a href="/store/{{store.id}}">
-                <div>
-                    <div class="card">
-                        <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
-                        <div class="card-footer" style="background-color: black; opacity: 0.7">
-                            <div class="row mw-100">
-                                <div>
-                                    <p class="card-text" style="color: white"><small>{{store.type1}} | {{store.type2}}</small></p>
+        <div class="carousel">
+            <div class="carouselbox" id="1">
+                {% for store in stores %}
+                <a href="/store/{{store.id}}">
+                    <div>
+                        <div class="card">
+                            <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                            <div class="card-footer" style="background-color: black; opacity: 0.7">
+                                <div class="row mw-100">
+                                    <div>
+                                        <p class="card-text" style="color: white"><small>{{store.type1}} | {{store.type2}}</small></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            {% endfor %}
+                {% endfor %}
+            </div>
+
+            <a class="switchLeft sliderButton" onclick="sliderScrollLeft(1)"><</a>
+            <a class="switchRight sliderButton" onclick="sliderScrollRight(1)">></a>
         </div>
 
-        <a class="switchLeft sliderButton" onclick="sliderScrollLeft(1)"><</a>
-        <a class="switchRight sliderButton" onclick="sliderScrollRight(1)">></a>
-    </div>
-
-    <div class="carousel">
-        <div class="carouselbox" id="2">
-            {% for store in stores %}
-            <a href="/store/{{store.id}}">
-                <div>
-                    <div class="card">
-                        <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
-                        <div class="card-footer" style="background-color: black; opacity: 0.7">
-                            <div class="row mw-100">
-                                <div>
-                                    <p class="card-text" style="color: white"><small>{{store.type1}} | {{store.type2}}</small></p>
+        <div class="carousel">
+            <div class="carouselbox" id="2">
+                {% for store in stores %}
+                <a href="/store/{{store.id}}">
+                    <div>
+                        <div class="card">
+                            <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                            <div class="card-footer" style="background-color: black; opacity: 0.7">
+                                <div class="row mw-100">
+                                    <div>
+                                        <p class="card-text" style="color: white"><small>{{store.type1}} | {{store.type2}}</small></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            {% endfor %}
+                {% endfor %}
+            </div>
+
+            <a class="switchLeft sliderButton" onclick="sliderScrollLeft(2)"><</a>
+            <a class="switchRight sliderButton" onclick="sliderScrollRight(2)">></a>
         </div>
 
-        <a class="switchLeft sliderButton" onclick="sliderScrollLeft(2)"><</a>
-        <a class="switchRight sliderButton" onclick="sliderScrollRight(2)">></a>
+
+        <!-- Just for showing Dynamic Contents :) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js"></script>
+        <script src="static/javascript/carousel.js"></script>
     </div>
-
-
-    <!-- Just for showing Dynamic Contents :) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js"></script>
-    <script src="static/javascript/carousel.js"></script>
 </body>
 {% endblock%}
