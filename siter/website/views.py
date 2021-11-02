@@ -7,13 +7,25 @@ import os
 
 views = Blueprint('views', __name__)
 
+def sortstores(category):
+    stores = Store.query.filter_by(type1=category).all()
+    return stores
+
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    stores = Store.query.all()
-
+    mix = sortstores('mix')
+    clothes = sortstores('clothes')
+    electronics = sortstores('electronics')
+    furniture = sortstores('furniture')
+    photography = sortstores('photography')
+    massage = sortstores('massage')
+    beauty = sortstores('beauty')
+    music = sortstores('music')
+    other = sortstores('other')
+        
     try:
-        return render_template("general/home.html", stores=stores)
+        return render_template("general/home.html", mix=mix, clothes=clothes, electronics=electronics, furniture=furniture, photography=photography, massage=massage, beauty=beauty, music=music, other=other)
     except:
         flash('Try refreshing your page!', category='error')
 
@@ -66,7 +78,7 @@ def deleteaccount():
 
                 db.session.delete(store)
             if cartitems:
-                for cartitem in caritems:
+                for cartitem in cartitems:
                     db.session.delete(cartitems)
         
             db.session.delete(user)

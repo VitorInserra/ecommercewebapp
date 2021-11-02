@@ -10,11 +10,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     username = db.Column(db.String(150), unique=True)
     role = db.Column(db.String(150))
-    categorypoints = db.column(db.String(10000))
 
     cart = db.relationship('CartItem', backref="user")
     userinfo = db.relationship('UserInfo', backref="user")
     store = db.relationship('Store', backref="user")
+    
+    #tmix = db.Column(db.LargeBinary)
 
 class UserInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

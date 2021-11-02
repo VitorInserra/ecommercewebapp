@@ -4,7 +4,7 @@
     <div class="container">
         <div class="carousel">
             <div class="carouselbox" id="0">
-                {% for store in stores %}
+                {% for store in mix %}
                 <a href="/store/{{store.id}}">
                     <div>
                         <div class="card">
@@ -29,7 +29,7 @@
 
         <div class="carousel">
             <div class="carouselbox" id="1">
-                {% for store in stores %}
+                {% for store in other %}
                 <a href="/store/{{store.id}}">
                     <div>
                         <div class="card">
@@ -54,7 +54,7 @@
 
         <div class="carousel">
             <div class="carouselbox" id="2">
-                {% for store in stores %}
+                {% for store in clothes %}
                 <a href="/store/{{store.id}}">
                     <div>
                         <div class="card">

@@ -1,8 +1,7 @@
-import time
+# import time
+# from .models import User
+# from flask_login import current_user
 
-def clickntime(category):
-    browse = time.time()
-
-
-def collector(category):
-    return(category, points)
+# def browsetime(category):
+#     user = current_user
+#     browse = time.time() #get used in terms of minutes
