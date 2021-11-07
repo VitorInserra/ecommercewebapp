@@ -7,25 +7,30 @@ import os
 
 views = Blueprint('views', __name__)
 
-def sortstores(category):
-    stores = Store.query.filter_by(type1=category).all()
+def sortstores(category, type11):
+    stores = Store.query.filter_by(type2=category, type1=type11).all()
+
     return stores
+
+def ptypes(prob1, prob2):
+    
+
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    mix = sortstores('mix')
-    clothes = sortstores('clothes')
-    electronics = sortstores('electronics')
-    furniture = sortstores('furniture')
-    photography = sortstores('photography')
-    massage = sortstores('massage')
-    beauty = sortstores('beauty')
-    music = sortstores('music')
-    other = sortstores('other')
+    mix = sortstores('mix', 'store')
+    clothes = sortstores('clothes', 'store')
+    # electronics = sortstores('electronics')
+    # furniture = sortstores('furniture')
+    # photography = sortstores('photography')
+    # massage = sortstores('massage')
+    # beauty = sortstores('beauty')
+    # music = sortstores('music')
+    other = sortstores('other', 'store')
         
     try:
-        return render_template("general/home.html", mix=mix, clothes=clothes, electronics=electronics, furniture=furniture, photography=photography, massage=massage, beauty=beauty, music=music, other=other)
+        return render_template("general/home.html", mix=mix, clothes=clothes, other=other)
     except:
         flash('Try refreshing your page!', category='error')
 
@@ -125,29 +130,23 @@ def newstore():
             #get image
             image = request.files['logo']
 
-            save_path = 'website\static\images'
+            save_path = 'website/Static/images/'
 
+            image.save(os.path.join(save_path, image.filename))
 
-            try:
-                image.save(os.path.join(save_path, image.filename))
+            newstore = Store(name=name, logoname=image.filename, user_id=current_user.id, type1=type1, type2=type2, type3=type3)
+            db.session.add(newstore)
+            db.session.commit()
 
-                newstore = Store(name=name, logoname=image.filename, user_id=current_user.id, type1=type1, type2=type2, type3=type3)
-                db.session.add(newstore)
-                db.session.commit()
-
-                return redirect(url_for('views.home'))
-            except:
-                flash('Something went wrong.', category='error')
-                return redirect(url_for('views.profile'))
+            return redirect(url_for('views.home'))
+            # except:
+            #     flash('Something went wrong.', category='error')
+            #     return redirect(url_for('views.profile'))
     
     elif current_user.store and current_user.role!='admin':
         return redirect(url_for('views.home'))
 
-    try:
-        return render_template("profile/newstore.html")
-    except:
-        flash('Something went wrong.', category='error')
-        return redirect(url_for('views.profile'))
+    return render_template("profile/newstore.html")
 
 
 @views.route('/removestore/<storeid>', methods=['GET', 'POST'])
