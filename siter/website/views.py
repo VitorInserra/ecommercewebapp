@@ -7,14 +7,10 @@ import os
 
 views = Blueprint('views', __name__)
 
-def sortstores(category, type11):
-    stores = Store.query.filter_by(type2=category, type1=type11).all()
+def sortstores(category, type1):
+    stores = Store.query.filter_by(type2=category, type1=type1).all()
 
     return stores
-
-def ptypes(prob1, prob2):
-    
-
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
@@ -116,6 +112,7 @@ def mystore():
         stores = Store.query.filter_by(user_id=current_user.id).all()
 
         return render_template("general/adminmystores.html", stores=stores)
+        
 
 @views.route('/newstore', methods=['GET', 'POST'])
 @login_required

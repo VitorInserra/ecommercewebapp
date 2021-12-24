@@ -14,8 +14,6 @@ class User(db.Model, UserMixin):
     cart = db.relationship('CartItem', backref="user")
     userinfo = db.relationship('UserInfo', backref="user")
     store = db.relationship('Store', backref="user")
-    
-    #tmix = db.Column(db.LargeBinary)
 
 class UserInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,3 +50,14 @@ class Item(db.Model):
     notes = db.Column(db.String(1000))
     
     store_id = db.Column(db.Integer, ForeignKey('store.id'))
+
+class Browsesesh(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
+    store_id = db.Column(db.Integer, ForeignKey('store.id'))
+    type1 = db.Column(db.String)
+    type2 = db.Column(db.String)
+
+    browsestart = db.Column(db.Integer)
+    browseend = db.Column(db.Integer)
+    browsetime = db.Column(db.Integer)

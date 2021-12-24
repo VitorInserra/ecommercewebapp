@@ -1,4 +1,17 @@
 {% extends "base.html" %} {% block title %} {{item.name}}  {% endblock %} {% block content%}
+<body>
+    <script>
+        let browseend = new Date().getTime()
+        $.ajax({
+            url: 'http://localhost:5000/postrequest/{{user.id}}/{{store.id}}',
+            type: "GET",
+            data: {'browseend':JSON.stringify(browseend)},
+            success: function () {
+                console.log('this is browseend');
+            }
+        });
+    </script>
+</body>
 <form method="POST">   
     <div>
         <input type="submit" name="Add to cart" value="add" >

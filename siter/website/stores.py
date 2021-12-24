@@ -1,10 +1,8 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
-from .models import Item, Store, User, CartItem, UserInfo
+from .models import Item, Store, User, CartItem, UserInfo, Browsesesh
 from . import db
-#from .storesrec import browsetime
-import os
 
 
 stores = Blueprint('stores', __name__)
@@ -20,16 +18,16 @@ def newitem(storeid):
             category = request.form.get('category')
             notes = request.form.get('notes')
 
-            image = request.files['itemimage']
+            #image = request.files['itemimage']
         
             #imagename = image.filename
-            save_path = 'website\static\images'
+            #save_path = 'website\static\images'
 
             try:
                 #completeName = os.path.join(save_path, imagename)
-                image.save(os.path.join(save_path, image.filename))
+                #image.save(os.path.join(save_path, image.filename))
 
-                newitem = Item(name=name, price=price, imagename=image.filename, category=category, notes=notes, store_id=storeid)
+                newitem = Item(name=name, price=price, category=category, notes=notes, store_id=storeid)
                 db.session.add(newitem)
                 db.session.commit()
 
@@ -38,11 +36,7 @@ def newitem(storeid):
                 flash('Something went wrong.', category='error')
                 return redirect(url_for('views.home'))
 
-        try:
-            return render_template("stores/newitem.html")
-        except:
-            flash('Something went wrong.', category='error')
-            return redirect(url_for('views.home'))
+        return render_template("stores/newitem.html")
 
     else:
         return redirect(url_for('views.home'))
@@ -92,11 +86,13 @@ def removefromcart(itemid):
 @stores.route('/store/<storeid>', methods=['GET','POST'])
 @login_required
 def store(storeid):
+
     store = Store.query.filter_by(id=storeid).first()
     items = Item.query.filter_by(store_id=storeid).all()
 
-    return render_template('stores/store.html', items=items, store=store)
+    return render_template('stores/store.html', items=items, store=store, user=current_user)
 #item page
+
 @stores.route('/item/<itemid>', methods=['GET', 'POST'])
 @login_required
 def item(itemid):
@@ -121,4 +117,43 @@ def item(itemid):
                 flash('An error occured', category='error')
                 return redirect(url_for('views.home'))
 
-    return render_template('stores/itempage.html', item=item, store=store)
+    return render_template('stores/itempage.html', item=item, store=store, user=current_user)
+
+#transition onunload -> from def store to ajaxrequest#
+@stores.route(('/prerequest/<userid>/<storeid>'), methods=['GET', 'POST'])
+def prerequest(userid, storeid):
+    browsestart = request.args['browsestart']
+    print(browsestart)
+    
+    store = Store.query.filter_by(id=storeid).first()
+
+    browsesesh = Browsesesh(user_id=userid, store_id=store.id, type1=store.type1, type2=store.type2, browsestart=browsestart)
+    db.session.add(browsesesh)
+    db.session.commit()
+
+    foo = 'complete'
+
+    return foo
+
+
+@stores.route(('/postrequest/<userid>/<storeid>'), methods=['GET', 'POST'])
+def postrequest(userid, storeid):
+    browsesesh = Browsesesh.query.filter_by(user_id=userid, store_id=storeid).order_by(Browsesesh.id.desc()).first()
+    print(browsesesh.id)
+
+    browsestart = browsesesh.browsestart
+
+
+    browseend = request.args['browseend']
+    browseend = int(browseend)
+    print(browseend)
+
+    browsesesh.browseend = browseend
+    browsesesh.browsetime = browseend - browsestart
+    print(browsesesh.browsetime)
+    db.session.commit()
+
+    foo = 'complete'
+
+    return foo
+    #pull browsestart from database then browsetime = browseend - browsestart

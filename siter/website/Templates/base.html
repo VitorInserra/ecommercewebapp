@@ -13,13 +13,21 @@
 
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
 
+	<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
+
+	
+
 	<title>{% block title %}Home{% endblock %}</title>
 </head>
 
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="/">konik.com</a>
+				<a class="navbar-brand" href="/">Flask</a>
 			</div>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 				<span class="navbar-toggler-icon"></span>
@@ -93,5 +101,6 @@
 				integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 				crossorigin="anonymous">
 		</script>
+		
 	</body>
 </html>
