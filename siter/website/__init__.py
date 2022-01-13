@@ -20,10 +20,12 @@ def create_app():
     from .views import views
     from .auth import auth
     from .stores import stores
+    # from .storesrec import storesrec
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(stores, url_prefix='/')
+    # app.register_blueprint(storesrec, url_prefix='/')
 
     from .models import User
 

@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
-from .models import Item, Store, User, UserInfo, CartItem
+from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
 from . import db
 import os
+
+# from storesrec import timetopoints
 
 views = Blueprint('views', __name__)
 
@@ -12,23 +14,54 @@ def sortstores(category, type1):
 
     return stores
 
+def timetopoints():
+
+    browsesesh = Browsesesh.query.filter_by(user_id=current_user.id).all()
+
+    for i in range (len(browsesesh)):
+        for j in range (0, i):
+            if browsesesh[i].browsetime and browsesesh[j].browsetime and browsesesh[i].browsetime < browsesesh[j].browsetime:
+                temp = browsesesh[i]
+                browsesesh[i] = browsesesh[j]
+                browsesesh[j] = temp
+
+    type1cong = []
+    for i in range (len(browsesesh)):
+        if browsesesh[i].type1 not in type1cong:
+            type1cong.append(browsesesh[i].type1)
+    
+    type2cong = []
+    for i in range (len(browsesesh)):
+        if browsesesh[i].type2 not in type2cong:
+            type2cong.append(browsesesh[i].type2)
+
+    class ListHolder(): 
+        def __init__(self, type1, type2):
+            self.type1 = type1 
+            self.type2 = type2
+
+    return ListHolder(type1cong, type2cong)
+    
+
+
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    mix = sortstores('mix', 'store')
-    clothes = sortstores('clothes', 'store')
-    # electronics = sortstores('electronics')
-    # furniture = sortstores('furniture')
-    # photography = sortstores('photography')
-    # massage = sortstores('massage')
-    # beauty = sortstores('beauty')
-    # music = sortstores('music')
-    other = sortstores('other', 'store')
+    holder = timetopoints()
+    type1ls = holder.type1
+    type2ls = holder.type2
+    print(type1ls, type2ls)
+
+    line1 = sortstores(type2ls[0], type1ls[0]) 
+    line2 = sortstores(type2ls[1], type1ls[1])
+    line3 = sortstores(type2ls[2], type1ls[2])
+    line4 = sortstores(type2ls[3], type1ls[3])
         
     try:
-        return render_template("general/home.html", mix=mix, clothes=clothes, other=other)
+        return render_template("general/home.html", line1=line1, lines2=line2, lines3=line3, line4=line4)
     except:
         flash('Try refreshing your page!', category='error')
+
 
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required
