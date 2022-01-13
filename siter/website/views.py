@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import null
 from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
 from . import db
 import os
@@ -52,15 +53,22 @@ def home():
     type2ls = holder.type2
     print(type1ls, type2ls)
 
-    line1 = sortstores(type2ls[0], type1ls[0]) 
-    line2 = sortstores(type2ls[1], type1ls[1])
-    line3 = sortstores(type2ls[2], type1ls[2])
-    line4 = sortstores(type2ls[3], type1ls[3])
-        
     try:
-        return render_template("general/home.html", line1=line1, lines2=line2, lines3=line3, line4=line4)
+        line0 = sortstores(type2ls[0], type1ls[0]) 
+        line1 = sortstores(type2ls[1], type1ls[1])
+        line2 = sortstores(type2ls[2], type1ls[2])
+        line3 = sortstores(type2ls[3], type1ls[3])
     except:
-        flash('Try refreshing your page!', category='error')
+        line0 = sortstores('mix', 'store') #for debug purposes
+        line1 = sortstores('other', 'store')
+        line2 = sortstores('mix', 'service')
+        line3 = sortstores('other', 'store')
+
+
+    laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
+    sentstore = laststore.id
+    
+    return render_template("general/home.html", line0=line0, user=current_user, storeid=sentstore)
 
 
 @views.route('/profile', methods=['GET', 'POST'])

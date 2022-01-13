@@ -139,21 +139,26 @@ def prerequest(userid, storeid):
 @stores.route(('/postrequest/<userid>/<storeid>'), methods=['GET', 'POST'])
 def postrequest(userid, storeid):
     browsesesh = Browsesesh.query.filter_by(user_id=userid, store_id=storeid).order_by(Browsesesh.id.desc()).first()
-    print(browsesesh.id)
 
-    browsestart = browsesesh.browsestart
+    if browsesesh and not browsesesh.browseend:    
+        print(browsesesh.id)
+
+        browsestart = browsesesh.browsestart
 
 
-    browseend = request.args['browseend']
-    browseend = int(browseend)
-    print(browseend)
+        browseend = request.args['browseend']
+        browseend = int(browseend)
+        print(browseend)
 
-    browsesesh.browseend = browseend
-    browsesesh.browsetime = browseend - browsestart
-    print(browsesesh.browsetime)
-    db.session.commit()
+        browsesesh.browseend = browseend
+        browsesesh.browsetime = browseend - browsestart
+        print(browsesesh.browsetime)
+        db.session.commit()
 
-    foo = 'complete'
+        foo = 'complete'
+        
+    else:
+        foo = 'does not exist'
 
     return foo
     #pull browsestart from database then browsetime = browseend - browsestart
