@@ -1,21 +1,15 @@
-# from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
-# from flask_login import login_required, current_user
-# from flask_sqlalchemy import SQLAlchemy
-# from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
-# from . import db
-# import os
+from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
+from flask_login import login_required, current_user
+from flask_sqlalchemy import SQLAlchemy
+from .models import User, Browsesesh
+from . import db
+import os
 
-# storesrec = Blueprint('storesrec', __name__)
+storesrec = Blueprint('storesrec', __name__)
 
-# def timetopoints():
+def browsetime_derivative(userid, storeid):
+#delta (currently 5)
+    browseseshH = Browsesesh.filter_by(user_id=userid, store_id=storeid).order_by(Browsesesh.id.desc()).first()
+    browseseshA = Browsesesh.filter_by(user_id=userid, store_id=(storeid-5)).order_by(Browsesesh.id.desc()).first()
 
-#     browsesesh = Browsesesh.query.filter_by(userid=current_user.id).all()
-
-#     for i in range (len(browsesesh)):
-#         for j in range (0, i):
-#             if browsesesh[i] < browsesesh[j]:
-#                 temp = browsesesh[i]
-#                 browsesesh[i] = browsesesh[j]
-#                 browsesesh[j] = temp
-    
-#     return browsesesh
+    roc = (browseseshH.browseend -  browseseshA.browseend)/5

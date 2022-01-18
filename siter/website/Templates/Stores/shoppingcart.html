@@ -1,5 +1,18 @@
 {% extends "base.html" %} {% block title %} Shopping Cart {% endblock %} {% block content%}
 <body>
+	<script>
+        let browseend = new Date().getTime()
+        $.ajax({
+            url: 'http://localhost:5000/postrequest/{{userid}}/{{storeid}}',
+            type: "GET",
+            data: {'browseend':JSON.stringify(browseend)},
+            success: function () {
+                console.log('this is browseend');
+            }
+        });
+    </script>
+
+
 	<div class="container">
 		{% for row in cart %}
 		<div class="row">

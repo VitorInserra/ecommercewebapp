@@ -15,7 +15,7 @@ def sortstores(category, type1):
 
     return stores
 
-def timetopoints():
+def timetopoints(): #temporary rec alg
 
     browsesesh = Browsesesh.query.filter_by(user_id=current_user.id).all()
 
@@ -52,6 +52,7 @@ def home():
     type1ls = holder.type1
     type2ls = holder.type2
     print(type1ls, type2ls)
+    print(current_user, current_user.id)
 
     try:
         line0 = sortstores(type2ls[0], type1ls[0]) 
@@ -66,9 +67,14 @@ def home():
 
 
     laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
-    sentstore = laststore.id
-    
-    return render_template("general/home.html", line0=line0, user=current_user, storeid=sentstore)
+    print(laststore)
+    if laststore:
+        sentstore = laststore.store_id
+        print(sentstore)
+    else:
+        sentstore = null
+        print(sentstore)
+    return render_template("general/home.html", line0=line0, userid=current_user.id, storeid=sentstore)
 
 
 @views.route('/profile', methods=['GET', 'POST'])
@@ -92,11 +98,22 @@ def profile():
                 except:
                     flash('Something went wrong.', category='error')
                     return redirect(url_for('views.profile'))
+
+    laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
+    print(laststore)
+    if laststore:
+        sentstore = laststore.store_id
+        print(sentstore)
+    else:
+        sentstore = null
+        print(sentstore)
+
     try:
-        return render_template("profile/profile.html", info=info)
+        return render_template("profile/profile.html", info=info, userid=current_user.id, storeid=sentstore)
     except:
-        flash('Oops! Something went wrong.', category='error')
+        flash('Something went wrong number 2.', category='error')
         return redirect(url_for('views.home'))
+
 
 @views.route('/deleteaccount', methods=['GET', 'POST'])
 @login_required
@@ -141,18 +158,29 @@ def deleteaccount():
 @views.route('/mystore', methods=['GET', 'POST'])
 @login_required
 def mystore():
+    laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
+    print(laststore)
+    if laststore:
+        sentstore = laststore.store_id
+        print(sentstore)
+    else:
+        sentstore = null
+        print(sentstore)
+
+    #not for admins
     if current_user.role != 'admin':
         store = Store.query.filter_by(user_id=current_user.id).first()
         
         try:
-            return render_template("profile/mystore.html", store=store)
+            return render_template("profile/mystore.html", store=store, userid=current_user.id, storeid=sentstore)
         except:
             flash('A problem occured.', category='error')
             return redirect(url_for('views.profile'))
+    #for admins         
     else:
         stores = Store.query.filter_by(user_id=current_user.id).all()
 
-        return render_template("general/adminmystores.html", stores=stores)
+        return render_template("general/adminmystores.html", stores=stores, userid=current_user.id, storeid=sentstore)
         
 
 @views.route('/newstore', methods=['GET', 'POST'])

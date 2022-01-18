@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import null
 from .models import Item, Store, User, CartItem, UserInfo, Browsesesh
 from . import db
 
@@ -62,8 +63,17 @@ def shoppingcart():
             flash('TO DO', category='Success')
             return redirect(url_for('views.home'))
 
+    laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
+    print(laststore)
+    if laststore:
+        sentstore = laststore.store_id
+        print(sentstore)
+    else:
+        sentstore = null
+        print(sentstore)
+
     try:
-        return render_template("stores/shoppingcart.html", cart=cart, info=info)
+        return render_template("stores/shoppingcart.html", cart=cart, info=info, userid=current_user.id, storeid=sentstore)
     except:
         flash('Something went wrong.', category='error')
         return redirect(url_for('views.home'))
@@ -138,7 +148,10 @@ def prerequest(userid, storeid):
 
 @stores.route(('/postrequest/<userid>/<storeid>'), methods=['GET', 'POST'])
 def postrequest(userid, storeid):
+    print(userid)
+    print(storeid)
     browsesesh = Browsesesh.query.filter_by(user_id=userid, store_id=storeid).order_by(Browsesesh.id.desc()).first()
+    print('1st test: ', browsesesh)
 
     if browsesesh and not browsesesh.browseend:    
         print(browsesesh.id)

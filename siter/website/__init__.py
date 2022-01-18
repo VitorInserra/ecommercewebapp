@@ -6,14 +6,14 @@ from flask_cors import CORS
 
 
 db = SQLAlchemy()
-DB_NAME = "database.db"
+DB_NAME = "database"
 
 #initialize website:
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'julioindapocket'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///database'
     db.init_app(app)
     CORS(app)
 
@@ -42,6 +42,5 @@ def create_app():
     return app
 
 def create_database(app):
-    if not path.exists('website/' + "database.db"):
-       db.create_all(app=app)
-       print('Created Database!')
+    db.create_all(app=app)
+    print('Created Database!')

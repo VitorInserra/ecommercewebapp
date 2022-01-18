@@ -58,6 +58,6 @@ class Browsesesh(db.Model):
     type1 = db.Column(db.String)
     type2 = db.Column(db.String)
 
-    browsestart = db.Column(db.Integer)
-    browseend = db.Column(db.Integer)
-    browsetime = db.Column(db.Integer)
+    browsestart = db.Column(db.BigInteger)
+    browseend = db.Column(db.BigInteger)
+    browsetime = db.Column(db.BigInteger)

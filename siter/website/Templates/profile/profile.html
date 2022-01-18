@@ -1,5 +1,18 @@
 {% extends "base.html" %} {% block title %} Profile {% endblock %} {% block content%}
 <body>
+    <script>
+        let browseend = new Date().getTime()
+        $.ajax({
+            url: 'http://localhost:5000/postrequest/{{userid}}/{{storeid}}',
+            type: "GET",
+            data: {'browseend':JSON.stringify(browseend)},
+            success: function () {
+                console.log('this is browseend @ profile.html');
+            }
+        });
+    </script>
+
+
     {% if info %}
     <div class="container">
         <p>Credit card: {{info.creditcard}}</p>
