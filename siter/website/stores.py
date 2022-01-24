@@ -129,7 +129,7 @@ def item(itemid):
 
     return render_template('stores/itempage.html', item=item, store=store, user=current_user)
 
-#transition onunload -> from def store to ajaxrequest#
+#AJAX REQUESTS#
 @stores.route(('/prerequest/<userid>/<storeid>'), methods=['GET', 'POST'])
 def prerequest(userid, storeid):
     browsestart = request.args['browsestart']
@@ -151,7 +151,6 @@ def postrequest(userid, storeid):
     print(userid)
     print(storeid)
     browsesesh = Browsesesh.query.filter_by(user_id=userid, store_id=storeid).order_by(Browsesesh.id.desc()).first()
-    print('1st test: ', browsesesh)
 
     if browsesesh and not browsesesh.browseend:    
         print(browsesesh.id)
@@ -168,10 +167,24 @@ def postrequest(userid, storeid):
         print(browsesesh.browsetime)
         db.session.commit()
 
+        # delete_unwcolumns_browsesesh() #possible conflict with previous db commit
+
         foo = 'complete'
         
     else:
         foo = 'does not exist'
 
     return foo
-    #pull browsestart from database then browsetime = browseend - browsestart
+
+
+def delete_unwcolumns_browsesesh(): #user specific
+    browseseshs = Browsesesh.query.filter_by(user_id=current_user.id).all()
+
+    for browsesesh in browseseshs:
+        if not browsesesh.browseend:
+            db.session.delete(browsesesh)
+            db.session.commit()
+            print(browsesesh, "deleted")
+
+
+#END OF AJAXREQUESTS#

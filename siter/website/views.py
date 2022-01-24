@@ -1,69 +1,39 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import null
-from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
-from . import db
+from sqlalchemy import delete, null
 import os
 
-# from storesrec import timetopoints
+from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
+from . import db
+
+from .storesrec import browsetime_derivative, list_stores
+from .stores import delete_unwcolumns_browsesesh
+
 
 views = Blueprint('views', __name__)
 
-def sortstores(category, type1):
-    stores = Store.query.filter_by(type2=category, type1=type1).all()
+
+def sortstores(type2, type1): #query all stores of type2, type1
+    stores = Store.query.filter_by(type2=type2, type1=type1).all()
 
     return stores
-
-def timetopoints(): #temporary rec alg
-
-    browsesesh = Browsesesh.query.filter_by(user_id=current_user.id).all()
-
-    for i in range (len(browsesesh)):
-        for j in range (0, i):
-            if browsesesh[i].browsetime and browsesesh[j].browsetime and browsesesh[i].browsetime < browsesesh[j].browsetime:
-                temp = browsesesh[i]
-                browsesesh[i] = browsesesh[j]
-                browsesesh[j] = temp
-
-    type1cong = []
-    for i in range (len(browsesesh)):
-        if browsesesh[i].type1 not in type1cong:
-            type1cong.append(browsesesh[i].type1)
     
-    type2cong = []
-    for i in range (len(browsesesh)):
-        if browsesesh[i].type2 not in type2cong:
-            type2cong.append(browsesesh[i].type2)
-
-    class ListHolder(): 
-        def __init__(self, type1, type2):
-            self.type1 = type1 
-            self.type2 = type2
-
-    return ListHolder(type1cong, type2cong)
-    
-
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    holder = timetopoints()
-    type1ls = holder.type1
-    type2ls = holder.type2
-    print(type1ls, type2ls)
-    print(current_user, current_user.id)
+    delete_unwcolumns_browsesesh()
+    
+    ranking = []
+    ranking = list_stores()
 
-    try:
-        line0 = sortstores(type2ls[0], type1ls[0]) 
-        line1 = sortstores(type2ls[1], type1ls[1])
-        line2 = sortstores(type2ls[2], type1ls[2])
-        line3 = sortstores(type2ls[3], type1ls[3])
-    except:
-        line0 = sortstores('mix', 'store') #for debug purposes
-        line1 = sortstores('other', 'store')
-        line2 = sortstores('mix', 'service')
-        line3 = sortstores('other', 'store')
+    print("SHOWING ALGO INPUTS")
+    print(ranking)
+    line0 = sortstores(ranking[0][1], ranking[0][2]) 
+    line1 = sortstores(ranking[1][1], ranking[1][2])
+    # line2 = sortstores(type2ls[2], type1ls[2])
+    # line3 = sortstores(type2ls[3], type1ls[3])
 
 
     laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
@@ -74,7 +44,15 @@ def home():
     else:
         sentstore = null
         print(sentstore)
-    return render_template("general/home.html", line0=line0, userid=current_user.id, storeid=sentstore)
+    return render_template("general/home.html", line0=line0, line1=line1, userid=current_user.id, storeid=sentstore)
+
+
+@views.route('/allstores', methods=['GET', 'POST'])
+@login_required
+def allstores():
+    stores = Store.query.all()
+
+    return render_template("general/allstores.html", stores=stores)
 
 
 @views.route('/profile', methods=['GET', 'POST'])

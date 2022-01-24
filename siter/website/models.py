@@ -51,6 +51,7 @@ class Item(db.Model):
     
     store_id = db.Column(db.Integer, ForeignKey('store.id'))
 
+
 class Browsesesh(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('user.id'))

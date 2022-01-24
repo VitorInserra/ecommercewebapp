@@ -34,8 +34,10 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbar">
 				<div class="navbar-nav">
-					{% if current_user.is_authenticated %}
-					<a class="nav-item nav-link" id="home" href="/shoppingcart">Cart</a>
+					{% if current_user.is_authenticated %} 
+					<!-- after login -->
+					<a class="nav-item nav-link" id="cart" href="/shoppingcart">Cart</a>
+					<a class="nav-item nav-link" id="allstores" href="/allstores">Stores</a>
 					
 					<div class="dropdown">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -47,6 +49,7 @@
 						</div>
 					</div>
 					{% else %}
+					<!-- before login -->
 					<a class="nav-item nav-link" id="signup" href="/signup">Sign Up</a>
 					<a class="nav-item nav-link" id="login" href="/login">Log in</a>
 					<div class="dropdown">
