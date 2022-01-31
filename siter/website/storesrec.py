@@ -22,7 +22,7 @@ def browsetime_derivative(userid, type2, type1):
 
 def list_stores():
 
-    storetypes = [['mix', 'store'], ['clothes', 'store'], ['electronics', 'store'], ['furniture', 'store'], ['photography', 'store'], ['massage', 'store'], ['beauty', 'store'], ['music', 'store'], ['other', 'store']]
+    storetypes = [['mix', 'store'], ['clothes', 'store'], ['electronics', 'store'], ['furniture', 'store'], ['photography', 'store'], ['massage', 'store'], ['beauty', 'store'], ['music', 'store'], ['other', 'store'], [']mix', 'service'], ['clothes', 'service'], ['electronics', 'service'], ['furniture', 'service'], ['photography', 'service'], ['massage', 'service'], ['beauty', 'service'], ['music', 'service'], ['other', 'service']]
     der_values = []
 
     for i in range (0, len(storetypes)):

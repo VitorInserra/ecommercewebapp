@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
+from flask_cors import cross_origin
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import null
@@ -146,6 +147,7 @@ def prerequest(userid, storeid):
     return foo
 
 
+
 @stores.route(('/postrequest/<userid>/<storeid>'), methods=['GET', 'POST'])
 def postrequest(userid, storeid):
     print(userid)
@@ -174,7 +176,7 @@ def postrequest(userid, storeid):
     else:
         foo = 'does not exist'
 
-    return foo
+    return "test"
 
 
 def delete_unwcolumns_browsesesh(): #user specific

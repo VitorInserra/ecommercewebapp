@@ -1,0 +1,8 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "homebrew/services"
+brew "libpq"
+brew "node"
+brew "python@3.9", link: false
+cask "miniconda"

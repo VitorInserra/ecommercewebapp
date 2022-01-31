@@ -20,6 +20,7 @@
         $.ajax({
             url: 'http://localhost:5000/prerequest/{{user.id}}/{{store.id}}',
             type: "GET",
+            crossDomain: true,
             data: {'browsestart':JSON.stringify(browsestart)},
             success: function () {
                 console.log('this is browsestart');

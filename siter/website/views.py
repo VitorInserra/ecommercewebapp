@@ -30,11 +30,15 @@ def home():
 
     print("SHOWING ALGO INPUTS")
     print(ranking)
-    line0 = sortstores(ranking[0][1], ranking[0][2]) 
-    line1 = sortstores(ranking[1][1], ranking[1][2])
-    # line2 = sortstores(type2ls[2], type1ls[2])
-    # line3 = sortstores(type2ls[3], type1ls[3])
 
+    try:
+        line0 = sortstores(ranking[0][1], ranking[0][2]) 
+        line1 = sortstores(ranking[1][1], ranking[1][2])
+        # line2 = sortstores(type2ls[2], type1ls[2])
+        # line3 = sortstores(type2ls[3], type1ls[3])
+    except:
+        line0 = sortstores('mix', 'store')
+        line1 = sortstores('clothes', 'store')
 
     laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
     print(laststore)
@@ -44,6 +48,7 @@ def home():
     else:
         sentstore = null
         print(sentstore)
+
     return render_template("general/home.html", line0=line0, line1=line1, userid=current_user.id, storeid=sentstore)
 
 

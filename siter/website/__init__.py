@@ -12,10 +12,10 @@ DB_NAME = "database"
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config['SECRET_KEY'] = 'julioindapocket'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///database'
     db.init_app(app)
-    CORS(app)
 
     from .views import views
     from .auth import auth
