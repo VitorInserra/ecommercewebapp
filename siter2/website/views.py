@@ -7,7 +7,7 @@ import os
 from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
 from . import db
 
-from .storesrec import browsetime_derivative, list_stores
+from .storesrec import list_stores
 from .stores import delete_unwcolumns_browsesesh
 
 
@@ -23,8 +23,6 @@ def sortstores(type2, type1): #query all stores of type2, type1
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    delete_unwcolumns_browsesesh()
-    
     ranking = []
     ranking = list_stores()
 
