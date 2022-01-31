@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %} My Store {% endblock %} {% block content%}
+{% if not current_user.store %}
+<div class="container">
+    <script>
+        let browseend = new Date().getTime()
+        $.ajax({
+            url: 'http://localhost:5000/postrequest/{{userid}}/{{storeid}}',
+            type: "GET",
+            data: {'browseend':JSON.stringify(browseend)},
+            success: function () {
+                console.log('this is browseend @ mystore.html');
+            }
+        });
+    </script>
+
+
+    <a href="/newstore">Create a store</a>
+</div>
+{% endif %}
+{% if store %}
+<div>
+    <a href="/removestore/{{store.id}}">Remove Store</a>
+</div>
+<div>
+    <a href="/newitem/{{store.id}}">Put an item for sale {{store.type1}}</a>
+</div>
+{% endif %}
+{% endblock %}

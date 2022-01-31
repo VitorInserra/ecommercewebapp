@@ -1,0 +1,123 @@
+{% extends "base.html" %} {% block title %} flask.com {% endblock %} {% block content%}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage.css') }}" />
+<body>
+    <script>
+        let browseend = new Date().getTime();
+        console.log('{{storeid}}');
+        console.log('{{userid}}')
+        $.ajax({
+            url: 'http://localhost:5000/postrequest/{{userid}}/{{storeid}}',
+            type: "GET",
+            data: {'browseend':JSON.stringify(browseend)},
+            success: function () {
+                console.log('this is browseend' + browseend);
+            }
+        }); // not sending, problem on python side probably - views.home
+    </script> 
+
+    <div class="container">
+        <div class="carousel">
+            <div class="carouselbox" id="0">
+                {% for store in line0 %}
+                <a href="/store/{{store.id}}">
+                    <div>
+                        <div class="card">
+                            <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                            <div class="card-footer" style="background-color: black; opacity: 0.7">
+                                <div class="row mw-100">
+                                    <div>
+                                        <p class="card-text" style="color: white"><small>{{store.name}} | {{store.type1}} | {{store.type2}}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+
+            <a class="switchLeft sliderButton" onclick="sliderScrollLeft(0)"><</a>
+            <a class="switchRight sliderButton" onclick="sliderScrollRight(0)">></a>
+        </div>
+
+        <div class="carousel">
+            <div class="carouselbox" id="1">
+                {% for store in line1 %}
+                <a href="/store/{{store.id}}">
+                    <div>
+                        <div class="card">
+                            <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                            <div class="card-footer" style="background-color: black; opacity: 0.7">
+                                <div class="row mw-100">
+                                    <div>
+                                        <p class="card-text" style="color: white"><small>{{store.name}} | {{store.type1}} | {{store.type2}}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                {% endfor %}
+            </div>
+
+            <a class="switchLeft sliderButton" onclick="sliderScrollLeft(1)"><</a>
+            <a class="switchRight sliderButton" onclick="sliderScrollRight(1)">></a>
+        </div>
+
+        <div class="carousel">
+            <div class="carouselbox" id="2">
+                {% for store in line2 %}
+                <a href="/store/{{store.id}}">
+                    <div>
+                        <div class="card">
+                            <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                            <div class="card-footer" style="background-color: black; opacity: 0.7">
+                                <div class="row mw-100">
+                                    <div>
+                                        <p class="card-text" style="color: white"><small>{{store.name}} | {{store.type1}} | {{store.type2}}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                {% endfor %}
+            </div>
+
+            <a class="switchLeft sliderButton" onclick="sliderScrollLeft(2)"><</a>
+            <a class="switchRight sliderButton" onclick="sliderScrollRight(2)">></a>
+        </div>
+
+        <div class="carousel">
+            <div class="carouselbox" id="3">
+                {% for store in line3 %}
+                <a href="/store/{{store.id}}">
+                    <div>
+                        <div class="card">
+                            <img style="height: 135px" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                            <div class="card-footer" style="background-color: black; opacity: 0.7">
+                                <div class="row mw-100">
+                                    <div>
+                                        <p class="card-text" style="color: white"><small>{{store.name}} | {{store.type1}} | {{store.type2}}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                {% endfor %}
+            </div>
+
+            <a class="switchLeft sliderButton" onclick="sliderScrollLeft(3)"><</a>
+            <a class="switchRight sliderButton" onclick="sliderScrollRight(3)">></a>
+        </div>
+
+
+        <!-- Just for showing Dynamic Contents :) -->
+        <script src="static/javascript/carousel.js"></script>
+    </div>
+</body>
+{% endblock%}

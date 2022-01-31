@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block title %} Profile {% endblock %} {% block content%}
+<body>
+    <script>
+        let browseend = new Date().getTime()
+        $.ajax({
+            url: 'http://localhost:5000/postrequest/{{userid}}/{{storeid}}',
+            type: "GET",
+            data: {'browseend':JSON.stringify(browseend)},
+            success: function () {
+                console.log('this is browseend @ profile.html');
+            }
+        });
+    </script>
+
+
+    {% if info %}
+    <div class="container">
+        <p>Credit card: {{info.creditcard}}</p>
+    </div>
+    <div class="container">
+        <p>Adress: {{info.adress}}</p>
+    </div>
+    {% else %}
+    <form method="POST">
+        <div class="form-group">
+            <label for="adress">Endereco de envio</label>
+            <input type="text" class="form-control" id="adress" name="adress" placeholder="Rua, número, complemento" />
+        </div>
+        <div class="form-group">
+            <label for="creditcard">Cartao de Credito</label>
+            <input type="text" class="form-control" id="creditcard" name="creditcard" placeholder="creditcard" />
+        </div>
+        <div class="container">
+            <input type="submit" name="send" value="send">
+        </div>
+    </form>
+    {% endif %}
+    <div class="container">
+        <p>{{current_user.username}}</p>
+        <p>{{current_user.email}}</p>
+        <a href="/logout">Log Out</a>
+        <a href="/deleteaccount">Delete Account</a>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block title %} flask.com {% endblock %} {% block content%}
+<head>
+    <link rel="stylesheet" href="static/styles/allstores.css">
+</head>
+<body>
+    <div class="row">
+        {% for store in stores %}
+        <a href="/store/{{store.id}}">
+            <div class="column">
+                <div class="card">
+                    <img style="height: 8em" src="static/images/{{store.logoname}}" alt="{{store.name}}">
+                    <div class="card-footer" style="background-color: black; opacity: 0.7">
+                        <div class="row mw-100">
+                            <div>
+                                <p class="card-text" style="color: white"><small>{{store.name}} | {{store.type1}} | {{store.type2}}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block title %} New Store {% endblock %} {% block content%}
+<form method="POST" enctype="multipart/form-data">
+    <h3 align="center">New Store</h3>
+    <div class="form-group">
+        <label for="storename">Store Name</label>
+        <input type="text" class="form-control" id="storename" name="storename" placeholder="Enter Store Name" />
+    </div>
+    <div class="form-group">
+        <label for="type1">Service or Store</label>
+        <select class="form-select" id="type1" name="type1">
+            <option selected></option>
+            <option value="store">Store</option>
+            <option value="service">Service</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="type2">Essential Products</label>
+        <select class="form-select" id="type2" name="type2">
+            <option selected></option>
+            <option value="mix">Mix</option>
+            <option value="clothes">Clothes</option>
+            <option value="electronics">Electronics</option>
+            <option value="furniture">Furniture</option>
+            <option value="photography">Photography/Videography</option>
+            <option value="massage">Massage</option>
+            <option value="beauty">Hair Stylist or Beauty Salon</option>
+            <option value="music">Music/Musician</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="type3">Please specify</label>
+        <input type="text" class="form-control" id="type3" name="type3" placeholder="Specify" />
+    </div>
+    <div class="form-group">
+        <input type="file" name="logo" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-dark">Add to page</button>
+</form>
+{% endblock %}

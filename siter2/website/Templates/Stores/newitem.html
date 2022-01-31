@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %} New Item {% endblock %} {% block content%}
+<form method="POST" enctype="multipart/form-data">
+    <h3 align="center">New item</h3>
+    <div class="form-group">
+        <label for="itemname">Item Name</label>
+        <input type="text" class="form-control" id="itemname" name="itemname" placeholder="Enter Item Name">
+    </div>
+    <div class="form-group">
+        <label for="itemprice">Item Price</label>
+        <input type="text" class="form-control" id="itemprice" name="itemprice" placeholder="Enter Item Price">
+    </div>
+    <div class="form-group">
+        <label for="category">Item Category</label>
+        <select class="form-select" id="category" name="category">
+            <option selected>Choose...</option>
+            <option value="clothes">Roupa</option>
+            <option value="electronics">Eletronicos</option>
+            <option value="mix">Misto</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="notes">Item Notes</label>
+        <input type="text" class="form-control" id="notes" name="notes" placeholder="Enter Item Information">
+    </div>
+    <div class="form-group">
+        <input type="file" name="itemimage" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-dark">Add to page</button>
+</form>
+{% endblock %}

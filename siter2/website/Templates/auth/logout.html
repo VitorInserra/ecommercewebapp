@@ -1,0 +1,8 @@
+{% extends "base.html" %} {% block title %} Log out {% endblock %} {% block content %}
+<form method="POST">
+    <h3 align="center">{{current_user.username}} are you sure you want to log out?</h3>
+    <div align="center">
+        <button type="submit" class="btn btn-dark">Log out</button>
+    </div>
+</form>
+{% endblock %}
