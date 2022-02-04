@@ -6,13 +6,19 @@ from . import db
 
 storesrec = Blueprint('storesrec', __name__)
 
+def browsetime_recycling(browsh):
+    for i in range (0, len(browsh) - 5):
+        db.session.delete(browsh[i])
+        
+
+
 def browsetime_derivative(userid, type2, type1):
 #delta (currently 5)
     print("Running browsetime_derivative")
     browseseshs = Browsesesh.query.filter_by(user_id=userid, type2=type2, type1=type1).order_by(Browsesesh.id.desc()).all()
     print("Current seshs", browseseshs)
 
-    roc = (browseseshs[0].browseend -  browseseshs[1].browseend)/2
+    roc = (browseseshs[0].browseend -  browseseshs[5].browseend)/5
 
     inf = [roc, type2, type1]
     print(inf)

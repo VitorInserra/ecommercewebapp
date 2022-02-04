@@ -8,7 +8,6 @@ from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
 from . import db
 
 from .storesrec import list_stores
-from .stores import delete_unwcolumns_browsesesh
 
 
 views = Blueprint('views', __name__)
@@ -24,7 +23,7 @@ def sortstores(type2, type1): #query all stores of type2, type1
 @login_required
 def home():
     ranking = []
-    ranking = list_stores()
+    ranking = list_stores() # returns list of tuples with [derivative of 5 last seshs, type2, type1] relative to browsesesh
 
     print("SHOWING ALGO INPUTS")
     print(ranking)
@@ -32,11 +31,13 @@ def home():
     try:
         line0 = sortstores(ranking[0][1], ranking[0][2]) 
         line1 = sortstores(ranking[1][1], ranking[1][2])
-        # line2 = sortstores(type2ls[2], type1ls[2])
-        # line3 = sortstores(type2ls[3], type1ls[3])
+        line2 = sortstores(ranking[2][1], ranking[1][2])
+        line3 = sortstores(ranking[3][1], ranking[3][2])
     except:
         line0 = sortstores('mix', 'store')
         line1 = sortstores('clothes', 'store')
+        line2 = sortstores('electronics', 'store')
+        line3 = sortstores('other', 'store')
 
     laststore = Browsesesh.query.filter_by(user_id=current_user.id).order_by(Browsesesh.id.desc()).first()
     print(laststore)
@@ -47,7 +48,7 @@ def home():
         sentstore = null
         print(sentstore)
 
-    return render_template("general/home.html", line0=line0, line1=line1, userid=current_user.id, storeid=sentstore)
+    return render_template("general/home.html", line0=line0, line1=line1, line2=line2, line3=line3, userid=current_user.id, storeid=sentstore)
 
 
 @views.route('/allstores', methods=['GET', 'POST'])

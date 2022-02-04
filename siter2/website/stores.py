@@ -167,26 +167,20 @@ def postrequest(userid, storeid):
         browsesesh.browseend = browseend
         browsesesh.browsetime = browseend - browsestart
         print(browsesesh.browsetime)
+
+        browseseshs = Browsesesh.query.filter_by(user_id=userid).all()
+
+        for i in range (len(browseseshs) - 1):
+            if not browseseshs[i].browseend:
+                db.session.delete(browseseshs[i])
+                print(browseseshs[i], "deleted")
+
+
+        for i in range (0, len(browseseshs) - 15):
+            db.session.delete(browseseshs[i])
+        
         db.session.commit()
 
-        # delete_unwcolumns_browsesesh() #possible conflict with previous db commit
-
-        foo = 'complete'
         
-    else:
-        foo = 'does not exist'
-
     return "test"
-
-
-def delete_unwcolumns_browsesesh(): #user specific
-    browseseshs = Browsesesh.query.filter_by(user_id=current_user.id).all()
-
-    for browsesesh in browseseshs:
-        if not browsesesh.browseend:
-            db.session.delete(browsesesh)
-            db.session.commit()
-            print(browsesesh, "deleted")
-
-
 #END OF AJAXREQUESTS#
