@@ -1,10 +1,10 @@
 # siter
 
-#Backend
+# Backend
 
-##Run (see prereqs and installations first)
+## Run (see prereqs and installations first)
 
-###Backend
+### Backend
   
   `conda source`
 
@@ -12,21 +12,21 @@
 
   `python3 main.py`
  
- ###Frontend
+ ### Frontend
   
   `npm start`
 
   
 
-##Prerequisites
+## Prerequisites
 1. Python 3.10.2
 2. Pip
 3. Postgre
 4. Conda
 
-##Windows
+## Windows
 
-###Installations
+### Installations
 
 `cd backend siter2`
 
