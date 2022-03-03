@@ -4,6 +4,7 @@
 
 ##Run (see prereqs and installations first)
 ###Backend
+  
   `conda source`
 
   `cd backend`
@@ -11,6 +12,7 @@
   `python3 main.py`
  
  ###Frontend
+  
   `npm start`
 
   
@@ -22,7 +24,9 @@
 4. Conda
 
 ##Windows
+
 ###Installations
+
 `cd backend siter2`
 
 `conda source`
