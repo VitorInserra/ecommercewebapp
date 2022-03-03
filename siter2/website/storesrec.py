@@ -9,7 +9,8 @@ storesrec = Blueprint('storesrec', __name__)
 def browsetime_recycling(browsh):
     for i in range (0, len(browsh) - 5):
         db.session.delete(browsh[i])
-        
+
+    return 'recycling done' 
 
 
 def browsetime_derivative(userid, type2, type1):
