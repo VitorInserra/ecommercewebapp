@@ -22,8 +22,6 @@
 3. Postgre
 4. Conda
 
-## Windows
-
 ### Installations
 
 `cd backend siter2`
