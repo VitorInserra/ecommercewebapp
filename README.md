@@ -19,7 +19,7 @@
 ## Prerequisites
 1. Python 3.10.2
 2. Pip
-3. Postgre
+3. Postgres
 4. Conda
 
 ### Installations
