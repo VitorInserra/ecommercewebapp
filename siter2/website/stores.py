@@ -3,9 +3,9 @@ from flask_cors import cross_origin
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import null
-from .models import Item, Store, User, CartItem, UserInfo, Browsesesh
+from .models import Item, Store, Users, CartItem, UserInfo, Browsesesh
 from . import db
-
+import os
 
 stores = Blueprint('stores', __name__)
 
@@ -20,23 +20,17 @@ def newitem(storeid):
             category = request.form.get('category')
             notes = request.form.get('notes')
 
-            #image = request.files['itemimage']
+            image = request.files['itemimage']
         
-            #imagename = image.filename
-            #save_path = 'website\static\images'
+            imagename = image.filename
+            save_path = 'website/static/images/'
+            image.save(os.path.join(save_path, imagename))
 
-            try:
-                #completeName = os.path.join(save_path, imagename)
-                #image.save(os.path.join(save_path, image.filename))
+            newitem = Item(name=name, price=price, category=category, notes=notes, store_id=storeid, imagename=imagename)
+            db.session.add(newitem)
+            db.session.commit()
 
-                newitem = Item(name=name, price=price, category=category, notes=notes, store_id=storeid)
-                db.session.add(newitem)
-                db.session.commit()
-
-                return redirect("/store/" + storeid)
-            except:
-                flash('Something went wrong.', category='error')
-                return redirect(url_for('views.home'))
+            return redirect("/store/" + storeid)
 
         return render_template("stores/newitem.html")
 
@@ -109,24 +103,22 @@ def store(storeid):
 def item(itemid):
     item = Item.query.filter_by(id=itemid).first()
     store = Store.query.filter_by(id=item.store_id).first()
+    if request.method('addToCart')=='Add To Cart':  
+        if item:
+            try:
+                cartitem = CartItem(item_id=item.id, user_id=current_user.id)
+                db.session.add(cartitem)
+                db.session.commit()
 
-    if request.method=='POST':
-        if request.form.get('Add to cart')=='add':
-            if item:
-                try:
-                    cartitem = CartItem(item_id=item.id, user_id=current_user.id)
-                    db.session.add(cartitem)
-                    db.session.commit()
-
-                    flash('Added to cart', category='success')
-                    return redirect("/item/" + itemid)
-            
-                except:
-                    flash('An error occured', category='error')
-                    return redirect(url_for('views.home'))
-            else:
+                flash('Added to cart', category='success')
+                return redirect("/item/" + itemid)
+        
+            except:
                 flash('An error occured', category='error')
                 return redirect(url_for('views.home'))
+        else:
+            flash('An error occured', category='error')
+            return redirect(url_for('views.home'))
 
     return render_template('stores/itempage.html', item=item, store=store, user=current_user)
 

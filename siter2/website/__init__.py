@@ -1,9 +1,8 @@
 from flask import Flask, Response
 from flask_sqlalchemy import SQLAlchemy
-from os import path
 from flask_login import LoginManager, UserMixin
 from flask_cors import CORS
-
+from os import path
 
 db = SQLAlchemy()
 DB_NAME = "database"
@@ -20,16 +19,12 @@ def create_app():
     from .views import views
     from .auth import auth
     from .stores import stores
-    # from .storesrec import storesrec
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(stores, url_prefix='/')
-    # app.register_blueprint(storesrec, url_prefix='/')
 
-    from .models import User
-
-    create_database(app)
+    from .models import Users
 
     login_manager = LoginManager()
     login_manager.login_view='auth.login'
@@ -37,10 +32,8 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return Users.query.get(int(id))
+    
+    db.create_all(app=app)
 
     return app
-
-def create_database(app):
-    db.create_all(app=app)
-    print('Created Database!')

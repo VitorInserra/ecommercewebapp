@@ -3,3 +3,22 @@
     min-height: 10em;
     width: 14em
 }
+
+body {
+    height: 100vh;
+    width: 100%;
+    background-color: lightblue;
+}
+
+.carousel {
+    height: 20rem;
+    width: 100%;
+}
+
+.container {
+    height: 180px;
+    width: 80%;
+    position: relative;
+    margin: 2em;
+}
+

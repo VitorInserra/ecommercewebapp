@@ -1,4 +1,4 @@
-from website import create_app, create_database
+from website import create_app
 
 #run webserver:
 app = create_app()

@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import delete, null
 import os
 
-from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
+from .models import Item, Store, Users, UserInfo, CartItem, Browsesesh
 from . import db
 
 from .storesrec import list_stores
@@ -101,7 +101,7 @@ def profile():
 @login_required
 def deleteaccount():
     if request.method=='POST':
-        user = User.query.filter_by(id=current_user.id).first()
+        user = Users.query.filter_by(id=current_user.id).first()
 
         store = Store.query.filter_by(user_id=current_user.id).first()
         if store:
@@ -177,9 +177,7 @@ def newstore():
         
             #get image
             image = request.files['logo']
-
-            save_path = 'website/Static/images/'
-
+            save_path = 'website/static/images/'
             image.save(os.path.join(save_path, image.filename))
 
             newstore = Store(name=name, logoname=image.filename, user_id=current_user.id, type1=type1, type2=type2, type3=type3)
@@ -187,10 +185,7 @@ def newstore():
             db.session.commit()
 
             return redirect(url_for('views.home'))
-            # except:
-            #     flash('Something went wrong.', category='error')
-            #     return redirect(url_for('views.profile'))
-    
+
     elif current_user.store and current_user.role!='admin':
         return redirect(url_for('views.home'))
 
