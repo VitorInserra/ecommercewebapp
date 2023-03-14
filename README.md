@@ -9,12 +9,6 @@
   `cd backend`
 
   `python3 main.py`
- 
- ### Frontend
-  
-  `npm start`
-
-  
 
 ## Prerequisites
 1. Python 3.10.2
