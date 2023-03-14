@@ -1,4 +1,5 @@
-# siter
+# Ecommerce web app
+This project is an ecommerce web app made to be an online shopping mall with various stores. The goal is to browse by stores instead of by product.
 
 ## Run (see prereqs and installations first)
 
