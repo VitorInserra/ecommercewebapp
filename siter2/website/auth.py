@@ -1,12 +1,14 @@
 #create login/authorized pages
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import Users
+from flask_cors import CORS
+from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from website import db
 from flask_login import login_user, login_required, logout_user, current_user
 
 
 auth = Blueprint('auth', __name__)
+CORS(auth)
 
 #normal sign up#
 @auth.route('/signup', methods=['GET','POST'])
@@ -18,8 +20,8 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        useremail = Users.query.filter_by(email=email).first()
-        userusername = Users.query.filter_by(username=username).first()
+        useremail = User.query.filter_by(email=email).first()
+        userusername = User.query.filter_by(username=username).first()
         
         if useremail:
             flash('Email already in use.', category='error')
@@ -35,7 +37,7 @@ def signup():
             flash('Password must have more than 7 characters', category='error')
         else:
             try:
-                new_user = Users(email=email, username=username, password=generate_password_hash(password1, method='sha256'), role='user') #look at other hashing algorithms
+                new_user = User(email=email, username=username, password=generate_password_hash(password1, method='sha256'), role='user') #look at other hashing algorithms
                 db.session.add(new_user)
                 db.session.commit()
                 login_user(new_user, remember=True)
@@ -57,7 +59,7 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        user = Users.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password): #checks user.password and password to see if they are the same
                 try: 
@@ -87,8 +89,8 @@ def adminsignup():
         password2 = request.form.get('password2')
         adminpass = request.form.get('adminpass')
 
-        useremail = Users.query.filter_by(email=email).first()
-        userusername = Users.query.filter_by(username=username).first()
+        useremail = User.query.filter_by(email=email).first()
+        userusername = User.query.filter_by(username=username).first()
         
         if useremail:
             flash('Email already in use.', category='error')
@@ -108,7 +110,7 @@ def adminsignup():
             flash('Wrong Admin Pass', category='error')
 
         else:
-            new_user = Users(email=email, username=username, password=generate_password_hash(password1, method='sha256'), role='admin') #look at other hashing algorithms
+            new_user = User(email=email, username=username, password=generate_password_hash(password1, method='sha256'), role='admin') #look at other hashing algorithms
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
@@ -124,7 +126,7 @@ def adminlogin():
         password = request.form.get('password')
         adminpass = request.form.get('adminpass')
 
-        user = Users.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user:
             if adminpass == 'eldemasiado':
                 if check_password_hash(user.password, password): #checks user.password and password to see if they are the same

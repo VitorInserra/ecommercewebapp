@@ -1,13 +1,14 @@
 from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
-from flask_cors import cross_origin
+from flask_cors import CORS, cross_origin
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import null
-from .models import Item, Store, Users, CartItem, UserInfo, Browsesesh
+from .models import Item, Store, User, CartItem, UserInfo, Browsesesh
 from . import db
 import os
 
 stores = Blueprint('stores', __name__)
+CORS(stores)
 
 #creating items#
 @stores.route('/newitem/<storeid>', methods=['GET', 'POST'])
@@ -137,7 +138,6 @@ def prerequest(userid, storeid):
     foo = 'complete'
 
     return foo
-
 
 
 @stores.route(('/postrequest/<userid>/<storeid>'), methods=['GET', 'POST'])

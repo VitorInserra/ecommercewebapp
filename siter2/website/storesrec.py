@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
-from .models import Users, Browsesesh
+from .models import User, Browsesesh
 from . import db
 
 storesrec = Blueprint('storesrec', __name__)

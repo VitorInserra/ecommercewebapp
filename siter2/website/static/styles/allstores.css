@@ -10,15 +10,13 @@ body {
     background-color: lightblue;
 }
 
-.carousel {
-    height: 20rem;
-    width: 100%;
-}
-
 .container {
     height: 180px;
     width: 80%;
     position: relative;
-    margin: 2em;
+}
+
+.column {
+    margin: 3em;
 }
 

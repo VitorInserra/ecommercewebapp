@@ -4,20 +4,20 @@ from sqlalchemy.sql import func
 from sqlalchemy import ForeignKey
 
 
-class Users(db.Model, UserMixin):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     username = db.Column(db.String(150), unique=True)
     role = db.Column(db.String(150))
 
-    cart = db.relationship('CartItem', backref="users")
-    userinfo = db.relationship('UserInfo', backref="users")
-    store = db.relationship('Store', backref="users")
+    cart = db.relationship('CartItem', backref="user")
+    userinfo = db.relationship('UserInfo', backref="user")
+    store = db.relationship('Store', backref="user")
 
 class UserInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
 
     creditcard = db.Column(db.String(20))
     adress = db.Column(db.String(150))
@@ -26,12 +26,12 @@ class UserInfo(db.Model):
 class CartItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
    
 
 class Store(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
     name = db.Column(db.String(150))
     logoname = db.Column(db.String(200))
     item = db.relationship('Item', backref="store")
@@ -54,7 +54,7 @@ class Item(db.Model):
 
 class Browsesesh(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
     store_id = db.Column(db.Integer, ForeignKey('store.id'))
     type1 = db.Column(db.String)
     type2 = db.Column(db.String)

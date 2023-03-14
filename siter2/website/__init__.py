@@ -11,9 +11,11 @@ DB_NAME = "database"
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, supports_credentials=True)
     app.config['SECRET_KEY'] = 'julioindapocket'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///database'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     db.init_app(app)
 
     from .views import views
@@ -24,7 +26,7 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(stores, url_prefix='/')
 
-    from .models import Users
+    from .models import User
 
     login_manager = LoginManager()
     login_manager.login_view='auth.login'
@@ -32,8 +34,8 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        return Users.query.get(int(id))
-    
+        return User.query.get(int(id))
+
     db.create_all(app=app)
 
     return app

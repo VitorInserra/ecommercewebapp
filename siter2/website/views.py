@@ -1,17 +1,18 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
+from flask_cors import CORS, cross_origin
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import delete, null
 import os
 
-from .models import Item, Store, Users, UserInfo, CartItem, Browsesesh
+from .models import Item, Store, User, UserInfo, CartItem, Browsesesh
 from . import db
 
 from .storesrec import list_stores
 
 
 views = Blueprint('views', __name__)
-
+CORS(views)
 
 def sortstores(type2, type1): #query all stores of type2, type1
     stores = Store.query.filter_by(type2=type2, type1=type1).all()
@@ -29,7 +30,7 @@ def home():
     print(ranking)
 
     try:
-        line0 = sortstores(ranking[0][1], ranking[0][2]) 
+        line0 = sortstores(ranking[0][1], ranking[0][2])
         line1 = sortstores(ranking[1][1], ranking[1][2])
         line2 = sortstores(ranking[2][1], ranking[1][2])
         line3 = sortstores(ranking[3][1], ranking[3][2])
@@ -101,7 +102,7 @@ def profile():
 @login_required
 def deleteaccount():
     if request.method=='POST':
-        user = Users.query.filter_by(id=current_user.id).first()
+        user = User.query.filter_by(id=current_user.id).first()
 
         store = Store.query.filter_by(user_id=current_user.id).first()
         if store:
