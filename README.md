@@ -20,8 +20,8 @@
 
 `cd backend siter2`
 
-`conda source`
-
 `pip3 install flask`
 
 `pip3 install flask-login, flask-sqlalchemy, flask-cors`
+
+'pip3 install psycopog2'
