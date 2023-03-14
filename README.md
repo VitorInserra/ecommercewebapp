@@ -24,4 +24,4 @@
 
 `pip3 install flask-login, flask-sqlalchemy, flask-cors`
 
-'pip3 install psycopog2'
+`pip3 install psycopog2`
