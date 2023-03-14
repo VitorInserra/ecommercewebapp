@@ -11,17 +11,10 @@ DB_NAME = "database"
 
 def create_app():
     app = Flask(__name__)
-<<<<<<< HEAD
-    CORS(app, supports_credentials=True)
-    app.config['SECRET_KEY'] = 'julioindapocket'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///database'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-=======
     CORS(app)
-    app.config['SECRET_KEY'] = 'a' # insert here
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:/// ' # insert here
->>>>>>> refs/remotes/origin/master
+    app.config['SECRET_KEY'] = 'secretkey' # insert here
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///database' # insert here
+
     db.init_app(app)
 
     from .views import views
