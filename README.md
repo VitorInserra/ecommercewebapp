@@ -1,5 +1,5 @@
 # Ecommerce web app
-This personal project is an ecommerce web app made to be an online shopping mall with various stores. The goal is to browse by stores instead of by product.
+This personal project is an ecommerce web app made to be an online shopping mall with various stores. The goal of this concept is to browse by stores instead of by product.
 
 ## Run (see prereqs and installations first)
 
